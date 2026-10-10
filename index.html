@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#181c26" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f4f5f8" media="(prefers-color-scheme: light)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Draft Board">
+<title>FBBL Draft Board</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-64.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">FBBL<span class="brand-sub">Draft Board</span></div>
+  <nav class="tabs" id="tabs">
+    <button class="tab" data-view="players">Players</button>
+    <button class="tab" data-view="team">My Team <span class="tab-badge" id="team-badge"></span></button>
+    <button class="tab" data-view="picks">Picks <span class="tab-badge" id="picks-badge"></span></button>
+    <button class="tab" data-view="settings">Settings</button>
+  </nav>
+  <div class="mode-switch" id="mode-switch" role="group" aria-label="Mode">
+    <button class="mode-btn" data-mode="prep">Prep</button>
+    <button class="mode-btn" data-mode="draft">Draft</button>
+  </div>
+</header>
+
+<div class="draftbar" id="draftbar" hidden>
+  <div class="draftbar-main">
+    <div class="draftbar-pick" id="db-current">Pick 1 · Round 1</div>
+    <div class="draftbar-next" id="db-next"></div>
+  </div>
+  <div class="draftbar-actions">
+    <button class="btn" id="db-slot-btn" hidden>Set draft slot</button>
+    <button class="btn" id="db-undo">Undo</button>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="view" id="view-players">
+    <div class="controls">
+      <div class="controls-row">
+        <div class="search-wrap">
+          <input type="search" id="search" placeholder="Search players" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+          <button class="search-clear" id="search-clear" aria-label="Clear search" hidden>×</button>
+        </div>
+        <div class="seg" id="source-seg" role="group" aria-label="Stat source">
+          <button class="seg-btn" data-source="proj">Projected 26-27</button>
+          <button class="seg-btn" data-source="last">Last season 25-26</button>
+        </div>
+        <div class="seg" id="status-seg" role="group" aria-label="Status">
+          <button class="seg-btn" data-status="available">Available</button>
+          <button class="seg-btn" data-status="taken">Taken</button>
+          <button class="seg-btn" data-status="mine">Mine</button>
+          <button class="seg-btn" data-status="all">All</button>
+        </div>
+      </div>
+      <div class="controls-row">
+        <div class="chips" id="tier-chips" aria-label="Tier filter"></div>
+        <div class="chips" id="pos-chips" aria-label="Position filter"></div>
+        <select id="team-select" aria-label="Team filter"><option value="">All teams</option></select>
+        <button class="chip toggle" id="uptick-toggle">▲ Uptick only</button>
+        <button class="chip toggle" id="group-toggle">Group by tier</button>
+        <button class="btn btn-quiet" id="clear-filters">Clear filters</button>
+        <div class="count" id="count"></div>
+      </div>
+    </div>
+    <div class="table-wrap" id="table-wrap">
+      <table class="players" id="players-table">
+        <thead>
+          <tr>
+            <th class="col-rank" data-sort="rank" title="Rank in the full pool by the current sort">#</th>
+            <th class="col-player" data-sort="name">Player</th>
+            <th class="col-team" data-sort="team">Team</th>
+            <th class="col-pos" data-sort="pos">Pos</th>
+            <th class="col-age col-opt num" data-sort="age">Age</th>
+            <th class="col-tier" data-sort="tier">Tier</th>
+            <th class="col-fppg num" data-sort="fppg">FPPG</th>
+            <th class="col-fp col-opt num" data-sort="fp">FP</th>
+            <th class="col-gp num" data-sort="gp">GP</th>
+            <th class="col-mpg num" data-sort="mpg">MPG</th>
+            <th class="col-other col-opt num" data-sort="otherFppg" id="th-other">Other FPPG</th>
+            <th class="col-mpgd col-opt num" data-sort="mpgDelta" title="Projected MPG minus last season MPG">MPG Δ</th>
+            <th class="col-adp num" data-sort="adp">ADP</th>
+            <th class="col-target num" data-sort="target">Target</th>
+            <th class="col-action">Pick</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>No players match.</div>
+    </div>
+  </section>
+
+  <section class="view" id="view-team" hidden>
+    <div class="page" id="team-page"></div>
+  </section>
+
+  <section class="view" id="view-picks" hidden>
+    <div class="page" id="picks-page"></div>
+  </section>
+
+  <section class="view" id="view-settings" hidden>
+    <div class="page settings">
+      <h2>Draft</h2>
+      <div class="field-row">
+        <label>My draft slot
+          <select id="set-slot"><option value="">Not set</option></select>
+        </label>
+        <label>Teams <input type="number" id="set-teams" min="2" max="30" inputmode="numeric"></label>
+        <label>Rounds <input type="number" id="set-rounds" min="1" max="30" inputmode="numeric"></label>
+      </div>
+      <p class="hint" id="slot-hint"></p>
+
+      <h2>Backup</h2>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="export-btn">Export</button>
+        <button class="btn" id="import-btn">Import</button>
+      </div>
+      <div id="export-box" class="io-box" hidden>
+        <p class="hint">Copy this text somewhere safe, or download it as a file.</p>
+        <textarea id="export-text" readonly rows="6"></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="export-copy">Copy</button>
+          <button class="btn" id="export-download">Download file</button>
+          <button class="btn btn-quiet" id="export-close">Close</button>
+        </div>
+      </div>
+      <div id="import-box" class="io-box" hidden>
+        <p class="hint">Paste exported JSON below, or choose a file. Importing replaces everything saved on this device.</p>
+        <textarea id="import-text" rows="6" placeholder="Paste JSON here"></textarea>
+        <div class="btn-row">
+          <label class="btn file-btn">Choose file<input type="file" id="import-file" accept=".json,application/json"></label>
+          <button class="btn btn-primary" id="import-apply">Import</button>
+          <button class="btn btn-quiet" id="import-close">Close</button>
+        </div>
+      </div>
+
+      <h2>Reset</h2>
+      <div class="btn-row">
+        <button class="btn btn-danger" id="reset-draft">Reset draft</button>
+        <button class="btn btn-danger" id="reset-tiers">Reset tiers to seed</button>
+      </div>
+      <p class="hint">Reset draft clears all picks and keeps tiers, flags, notes and targets. Use it after a mock draft.</p>
+
+      <h2>About</h2>
+      <p class="reminder">Always open from the home screen icon. Use Export and Import to move data.</p>
+      <p class="hint" id="about-data"></p>
+      <p class="hint">Scoring: PTS + REB + AST + 2×STL + BLK − TO + (FGM − FGA) + (FTM − FTA). Williamstown FBBL, 10 teams, 13 rounds, snake.</p>
+    </div>
+  </section>
+
+  <div class="loading" id="loading">Loading players…</div>
+</main>
+
+<div class="modal-root" id="modal-root" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

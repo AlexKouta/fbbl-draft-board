@@ -1,0 +1,892 @@
+{
+ "_about": {
+  "purpose": "Lookup tables for ESPN fantasy basketball (game code fba). The API returns numeric IDs with no labels; this file decodes them.",
+  "captured": "2026-10-10",
+  "provenance": {
+   "proTeams": "live, from /seasons/2027?view=proTeamSchedules_wl",
+   "enums": "live, from settings.typeNames in the same response",
+   "stats": "labels from the open-source espn-api library (cwendt94); IDs marked confirmed were checked by recomputing fantasy points for league 41967023 or against ESPN's default category set",
+   "lineupSlots": "labels from espn-api; slot counts and player eligibility in live data are consistent with them",
+   "leagueScoring": "live, league 41967023 settings.scoringSettings.scoringItems (same in 2026 and 2027)"
+  }
+ },
+ "stats": {
+  "0": {
+   "abbr": "PTS",
+   "name": "Points",
+   "confirmed": true
+  },
+  "1": {
+   "abbr": "BLK",
+   "name": "Blocks",
+   "confirmed": true
+  },
+  "2": {
+   "abbr": "STL",
+   "name": "Steals",
+   "confirmed": true
+  },
+  "3": {
+   "abbr": "AST",
+   "name": "Assists",
+   "confirmed": true
+  },
+  "4": {
+   "abbr": "OREB",
+   "name": "Offensive rebounds",
+   "confirmed": false
+  },
+  "5": {
+   "abbr": "DREB",
+   "name": "Defensive rebounds",
+   "confirmed": false
+  },
+  "6": {
+   "abbr": "REB",
+   "name": "Rebounds",
+   "confirmed": true
+  },
+  "7": {
+   "abbr": "EJ",
+   "name": "Ejections",
+   "confirmed": false
+  },
+  "8": {
+   "abbr": "FF",
+   "name": "Flagrant fouls",
+   "confirmed": false
+  },
+  "9": {
+   "abbr": "PF",
+   "name": "Personal fouls",
+   "confirmed": false
+  },
+  "10": {
+   "abbr": "TF",
+   "name": "Technical fouls",
+   "confirmed": false
+  },
+  "11": {
+   "abbr": "TO",
+   "name": "Turnovers",
+   "confirmed": true
+  },
+  "12": {
+   "abbr": "DQ",
+   "name": "Disqualifications",
+   "confirmed": false
+  },
+  "13": {
+   "abbr": "FGM",
+   "name": "Field goals made",
+   "confirmed": true
+  },
+  "14": {
+   "abbr": "FGA",
+   "name": "Field goals attempted",
+   "confirmed": true
+  },
+  "15": {
+   "abbr": "FTM",
+   "name": "Free throws made",
+   "confirmed": true
+  },
+  "16": {
+   "abbr": "FTA",
+   "name": "Free throws attempted",
+   "confirmed": true
+  },
+  "17": {
+   "abbr": "3PM",
+   "name": "Three-pointers made",
+   "confirmed": true
+  },
+  "18": {
+   "abbr": "3PA",
+   "name": "Three-pointers attempted",
+   "confirmed": false
+  },
+  "19": {
+   "abbr": "FG%",
+   "name": "Field goal percentage",
+   "confirmed": true
+  },
+  "20": {
+   "abbr": "FT%",
+   "name": "Free throw percentage",
+   "confirmed": true
+  },
+  "21": {
+   "abbr": "3PT%",
+   "name": "Three-point percentage",
+   "confirmed": false
+  },
+  "22": {
+   "abbr": "AFG%",
+   "name": "Adjusted field goal percentage",
+   "confirmed": false
+  },
+  "23": {
+   "abbr": "FGMI",
+   "name": "Field goals missed",
+   "confirmed": false
+  },
+  "24": {
+   "abbr": "FTMI",
+   "name": "Free throws missed",
+   "confirmed": false
+  },
+  "25": {
+   "abbr": "3PMI",
+   "name": "Three-pointers missed",
+   "confirmed": false
+  },
+  "26": {
+   "abbr": "APG",
+   "name": "Assists per game",
+   "confirmed": false
+  },
+  "27": {
+   "abbr": "BPG",
+   "name": "Blocks per game",
+   "confirmed": false
+  },
+  "28": {
+   "abbr": "MPG",
+   "name": "Minutes per game",
+   "confirmed": false
+  },
+  "29": {
+   "abbr": "PPG",
+   "name": "Points per game",
+   "confirmed": false
+  },
+  "30": {
+   "abbr": "RPG",
+   "name": "Rebounds per game",
+   "confirmed": false
+  },
+  "31": {
+   "abbr": "SPG",
+   "name": "Steals per game",
+   "confirmed": false
+  },
+  "32": {
+   "abbr": "TOPG",
+   "name": "Turnovers per game",
+   "confirmed": false
+  },
+  "33": {
+   "abbr": "3PG",
+   "name": "Three-pointers per game",
+   "confirmed": false
+  },
+  "34": {
+   "abbr": "PPM",
+   "name": "Points per minute",
+   "confirmed": false
+  },
+  "35": {
+   "abbr": "A/TO",
+   "name": "Assist-to-turnover ratio",
+   "confirmed": false
+  },
+  "36": {
+   "abbr": "STR",
+   "name": null,
+   "confirmed": false
+  },
+  "37": {
+   "abbr": "DD",
+   "name": "Double-doubles",
+   "confirmed": false
+  },
+  "38": {
+   "abbr": "TD",
+   "name": "Triple-doubles",
+   "confirmed": false
+  },
+  "39": {
+   "abbr": "QD",
+   "name": "Quadruple-doubles",
+   "confirmed": false
+  },
+  "40": {
+   "abbr": "MIN",
+   "name": "Minutes",
+   "confirmed": true
+  },
+  "41": {
+   "abbr": "GS",
+   "name": "Games started",
+   "confirmed": true
+  },
+  "42": {
+   "abbr": "GP",
+   "name": "Games played",
+   "confirmed": true
+  },
+  "43": {
+   "abbr": "TW",
+   "name": null,
+   "confirmed": false
+  },
+  "44": {
+   "abbr": "FTR",
+   "name": null,
+   "confirmed": false
+  }
+ },
+ "lineupSlots": {
+  "0": {
+   "abbr": "PG",
+   "starter": true
+  },
+  "1": {
+   "abbr": "SG",
+   "starter": true
+  },
+  "2": {
+   "abbr": "SF",
+   "starter": true
+  },
+  "3": {
+   "abbr": "PF",
+   "starter": true
+  },
+  "4": {
+   "abbr": "C",
+   "starter": true
+  },
+  "5": {
+   "abbr": "G",
+   "starter": true
+  },
+  "6": {
+   "abbr": "F",
+   "starter": true
+  },
+  "7": {
+   "abbr": "SG/SF",
+   "starter": true
+  },
+  "8": {
+   "abbr": "G/F",
+   "starter": true
+  },
+  "9": {
+   "abbr": "PF/C",
+   "starter": true
+  },
+  "10": {
+   "abbr": "F/C",
+   "starter": true
+  },
+  "11": {
+   "abbr": "UTIL",
+   "starter": true
+  },
+  "12": {
+   "abbr": "BE",
+   "name": "Bench",
+   "starter": false
+  },
+  "13": {
+   "abbr": "IR",
+   "name": "Injured reserve",
+   "starter": false
+  }
+ },
+ "defaultPositions": {
+  "_note": "player.defaultPositionId uses its own 1-based numbering, not the lineup slot IDs",
+  "1": "PG",
+  "2": "SG",
+  "3": "SF",
+  "4": "PF",
+  "5": "C"
+ },
+ "proTeams": {
+  "_note": "universeId: 1 = Eastern Conference, 2 = Western Conference, 0 = none",
+  "0": {
+   "abbrev": "FA",
+   "location": "",
+   "name": "FA",
+   "universeId": 0
+  },
+  "1": {
+   "abbrev": "ATL",
+   "location": "Atlanta",
+   "name": "Hawks",
+   "universeId": 1
+  },
+  "2": {
+   "abbrev": "BOS",
+   "location": "Boston",
+   "name": "Celtics",
+   "universeId": 1
+  },
+  "3": {
+   "abbrev": "NO",
+   "location": "New Orleans",
+   "name": "Pelicans",
+   "universeId": 2
+  },
+  "4": {
+   "abbrev": "CHI",
+   "location": "Chicago",
+   "name": "Bulls",
+   "universeId": 1
+  },
+  "5": {
+   "abbrev": "CLE",
+   "location": "Cleveland",
+   "name": "Cavaliers",
+   "universeId": 1
+  },
+  "6": {
+   "abbrev": "DAL",
+   "location": "Dallas",
+   "name": "Mavericks",
+   "universeId": 2
+  },
+  "7": {
+   "abbrev": "DEN",
+   "location": "Denver",
+   "name": "Nuggets",
+   "universeId": 2
+  },
+  "8": {
+   "abbrev": "DET",
+   "location": "Detroit",
+   "name": "Pistons",
+   "universeId": 1
+  },
+  "9": {
+   "abbrev": "GS",
+   "location": "Golden State",
+   "name": "Warriors",
+   "universeId": 2
+  },
+  "10": {
+   "abbrev": "HOU",
+   "location": "Houston",
+   "name": "Rockets",
+   "universeId": 2
+  },
+  "11": {
+   "abbrev": "IND",
+   "location": "Indiana",
+   "name": "Pacers",
+   "universeId": 1
+  },
+  "12": {
+   "abbrev": "LAC",
+   "location": "LA",
+   "name": "Clippers",
+   "universeId": 2
+  },
+  "13": {
+   "abbrev": "LAL",
+   "location": "Los Angeles",
+   "name": "Lakers",
+   "universeId": 2
+  },
+  "14": {
+   "abbrev": "MIA",
+   "location": "Miami",
+   "name": "Heat",
+   "universeId": 1
+  },
+  "15": {
+   "abbrev": "MIL",
+   "location": "Milwaukee",
+   "name": "Bucks",
+   "universeId": 1
+  },
+  "16": {
+   "abbrev": "MIN",
+   "location": "Minnesota",
+   "name": "Timberwolves",
+   "universeId": 2
+  },
+  "17": {
+   "abbrev": "BKN",
+   "location": "Brooklyn",
+   "name": "Nets",
+   "universeId": 1
+  },
+  "18": {
+   "abbrev": "NY",
+   "location": "New York",
+   "name": "Knicks",
+   "universeId": 1
+  },
+  "19": {
+   "abbrev": "ORL",
+   "location": "Orlando",
+   "name": "Magic",
+   "universeId": 1
+  },
+  "20": {
+   "abbrev": "PHI",
+   "location": "Philadelphia",
+   "name": "76ers",
+   "universeId": 1
+  },
+  "21": {
+   "abbrev": "PHX",
+   "location": "Phoenix",
+   "name": "Suns",
+   "universeId": 2
+  },
+  "22": {
+   "abbrev": "POR",
+   "location": "Portland",
+   "name": "Trail Blazers",
+   "universeId": 2
+  },
+  "23": {
+   "abbrev": "SAC",
+   "location": "Sacramento",
+   "name": "Kings",
+   "universeId": 2
+  },
+  "24": {
+   "abbrev": "SA",
+   "location": "San Antonio",
+   "name": "Spurs",
+   "universeId": 2
+  },
+  "25": {
+   "abbrev": "OKC",
+   "location": "Oklahoma City",
+   "name": "Thunder",
+   "universeId": 2
+  },
+  "26": {
+   "abbrev": "UTAH",
+   "location": "Utah",
+   "name": "Jazz",
+   "universeId": 2
+  },
+  "27": {
+   "abbrev": "WSH",
+   "location": "Washington",
+   "name": "Wizards",
+   "universeId": 1
+  },
+  "28": {
+   "abbrev": "TOR",
+   "location": "Toronto",
+   "name": "Raptors",
+   "universeId": 1
+  },
+  "29": {
+   "abbrev": "MEM",
+   "location": "Memphis",
+   "name": "Grizzlies",
+   "universeId": 2
+  },
+  "30": {
+   "abbrev": "CHA",
+   "location": "Charlotte",
+   "name": "Hornets",
+   "universeId": 1
+  }
+ },
+ "statEntries": {
+  "_note": "player.stats[] entries are identified by id = statSourceId + statSplitTypeId + key. Season in the key is the year the season ends.",
+  "statSourceId": {
+   "0": "actual",
+   "1": "projected"
+  },
+  "statSplitTypeId": {
+   "0": "season",
+   "1": "last 7 days",
+   "2": "last 15 days",
+   "3": "last 30 days",
+   "5": "single game (or matchup-week total when id is 05null)"
+  },
+  "idPatterns": {
+   "00{season}": "actual season totals, e.g. 002027",
+   "01{season}": "actual, last 7 days",
+   "02{season}": "actual, last 15 days",
+   "03{season}": "actual, last 30 days",
+   "10{season}": "ESPN season projection, e.g. 102027",
+   "05{eventId}": "one game; externalId is the ESPN event ID and scoringPeriodId is the day",
+   "05null": "player's totals for the matchup week, inside schedule[].home|away.rosterForMatchupPeriod"
+  },
+  "fields": {
+   "stats": "raw stat totals keyed by stat ID",
+   "averageStats": "per-game averages keyed by stat ID (season and split entries only)",
+   "appliedStats": "fantasy points per scored stat under the league's weights (league calls only)",
+   "appliedTotal": "fantasy points total (league calls only)",
+   "appliedAverage": "fantasy points per game (league calls only)"
+  }
+ },
+ "playerRatingWindows": {
+  "_note": "keys of playerPoolEntry.ratings; in a points league totalRating equals the fantasy points for that window",
+  "0": "season",
+  "1": "last 7 days",
+  "2": "last 15 days",
+  "3": "last 30 days"
+ },
+ "activityMessageTypeIds": {
+  "_note": "from espn-api, not observed live (the league had no transactions yet in 2027). Only 111 was seen live.",
+  "178": "FA ADDED",
+  "180": "WAIVER ADDED",
+  "179": "DROPPED",
+  "181": "DROPPED",
+  "239": "DROPPED",
+  "188": "MOVED (lineup slot change)",
+  "244": "TRADED",
+  "111": "draft date changed (observed: from/to hold the old and new timestamps)",
+  "0": "league chat message (observed)"
+ },
+ "enums": {
+  "_note": "ESPN's own enumerations, complete as returned in settings.typeNames, except messageTypes (about 200 names with no numeric IDs attached) which is omitted.",
+  "scoringTypes": [
+   "ROTO",
+   "H2H_POINTS",
+   "H2H_CATEGORY",
+   "H2H_MOST_CATEGORIES",
+   "TOTAL_SEASON_POINTS",
+   "WEEKLY_ALL_PLAY_POINTS",
+   "WEEKLY_ALL_PLAY_CATEGORY"
+  ],
+  "playerStatusTypes": [
+   "FREEAGENT",
+   "ONTEAM",
+   "WAIVERS"
+  ],
+  "injuryStatusTypes": [
+   "ACTIVE",
+   "PROBABLE",
+   "QUESTIONABLE",
+   "DOUBTFUL",
+   "OUT",
+   "INJURY_RESERVE",
+   "DAY_TO_DAY",
+   "FIFTEEN_DAY_DL",
+   "SIXTY_DAY_DL",
+   "SEVEN_DAY_DL",
+   "TEN_DAY_DL",
+   "BEREAVEMENT",
+   "PATERNITY",
+   "SUSPENSION",
+   "RESERVE_RETIRED"
+  ],
+  "rosterInjuryStatusTypes": [
+   "NORMAL",
+   "FUTURE_FROM_IR",
+   "FUTURE_TO_IR"
+  ],
+  "rosterStatusTypes": [
+   "NORMAL",
+   "FUTURE_ADD",
+   "FUTURE_DROP",
+   "TRADE_RESERVED"
+  ],
+  "transactionTypes": [
+   "TRADE_DECLINE",
+   "TRADE_PROPOSAL",
+   "TRADE_ACCEPT",
+   "TRADE_UPHOLD",
+   "TRADE_VETO",
+   "WAIVER_ERROR",
+   "TRADE_ERROR",
+   "WAIVER",
+   "ROSTER",
+   "FUTURE_ROSTER",
+   "RETRO_ROSTER",
+   "FREEAGENT",
+   "DRAFT"
+  ],
+  "transactionStatusTypes": [
+   "FAILED_UNKNOWN",
+   "PENDING",
+   "EXECUTED",
+   "CANCELED",
+   "FAILED_POSITIONLIMIT",
+   "FAILED_TRADELOCK",
+   "FAILED_NOTCLEAREDWAIVERS",
+   "FAILED_ROSTERLOCK",
+   "FAILED_LINEUPLOCK",
+   "FAILED_TRADELIMIT",
+   "FAILED_ACQUISITIONLIMIT",
+   "FAILED_SLOTLIMIT",
+   "FAILED_INELIGIBLESLOT",
+   "FAILED_IRSLOT",
+   "FAILED_ROSTERLIMIT",
+   "FAILED_INVALIDPLAYERSOURCE",
+   "FAILED_TRANSVALIDATIONFAILED",
+   "FAILED_NOPERMISSION",
+   "FAILED_INVALIDROSTER",
+   "FAILED_CANCELTRANSACTION",
+   "FAILED_CANCELACCEPTEDTRADE",
+   "FAILED_UNDROPPABLEPLAYER",
+   "FAILED_BADUNIVERSE",
+   "FAILED_PLAYERALREADYDROPPED",
+   "FAILED_TRADEPLAYERTOIR",
+   "FAILED_DROPRESERVEDPLAYER",
+   "FAILED_MATCHUPACQUISITIONLIMIT",
+   "FAILED_AUCTIONBUDGETEXCEEDED",
+   "FAILED_PLAYERNOTONROSTER",
+   "FAILED_MINIMUMBID",
+   "FAILED_INVALID_FORMAT",
+   "FAILED_TRANSACTIONLOCKED",
+   "FAILED_TRADE_RESERVED"
+  ],
+  "transactionTeamActionTypes": [
+   "INVOLVED",
+   "ACCEPTED",
+   "APPROVED",
+   "VETOED",
+   "PROTESTED"
+  ],
+  "executionTypes": [
+   "EXECUTE",
+   "CANCEL",
+   "PROCESS",
+   "ANALYZE"
+  ],
+  "moveTypes": [
+   "NONE",
+   "LINEUP",
+   "ADD",
+   "DROP",
+   "TRADE",
+   "DRAFT",
+   "UNDRAFT",
+   "DRAFT_TRADE",
+   "ACQUISITION_BUDGET_TRADE",
+   "FUTURE_DRAFT_TRADE"
+  ],
+  "winnerTypes": [
+   "HOME",
+   "AWAY",
+   "TIE",
+   "UNDECIDED"
+  ],
+  "resultTypes": [
+   "WIN",
+   "LOSS",
+   "TIE",
+   "NONE"
+  ],
+  "playoffTierTypes": [
+   "WINNERS_BRACKET",
+   "WINNERS_CONSOLATION_LADDER",
+   "LOSERS_CONSOLATION_LADDER",
+   "NONE"
+  ],
+  "topicTypes": [
+   "NOTE",
+   "POLL",
+   "MSG_BOARD",
+   "CHAT",
+   "EMAIL",
+   "OTHER",
+   "ACTIVITY_TRANSACTIONS",
+   "ACTIVITY_SETTINGS",
+   "ACTIVITY_STATUS",
+   "ACTIVITY_SCHEDULE",
+   "MSG_BOARD_GROUP",
+   "MSG_BOARD_MATCHUP",
+   "REMINDER_ACTIVATE",
+   "REMINDER_SCHEDULE",
+   "CHAT_ALL_MEMBERS",
+   "CHAT_DIRECT_MESSAGE"
+  ],
+  "acquisitionTypes": [
+   "FREEAGENCY",
+   "WAIVERS_TRADITIONAL",
+   "WAIVERS_CONTINUOUS"
+  ],
+  "draftTypes": [
+   "OFFLINE",
+   "SNAKE",
+   "AUTOPICK",
+   "SNAIL",
+   "AUCTION",
+   "LINEAR"
+  ],
+  "draftOrderTypes": [
+   "MANUAL",
+   "DRAFT_START"
+  ],
+  "keeperOrderTypes": [
+   "TRADITIONAL",
+   "END_OF_DRAFT",
+   "SELECTED_ROUND",
+   "MANUAL"
+  ],
+  "locktimeTypes": [
+   "INDIVIDUAL_GAME",
+   "FIRSTGAME_SCORINGPERIOD",
+   "INDIVIDUAL_FIRSTGAME_WEEKLY",
+   "FIRSTGAME_WEEKLY"
+  ],
+  "matchupTieRuleTypes": [
+   "NONE",
+   "HOME_TEAM_WINS",
+   "SLOT_POINTS",
+   "STAT_POINTS",
+   "HIGHEST_PLAYOFF_SEED"
+  ],
+  "recordSeedingRuleTypes": [
+   "UNKNOWN",
+   "H2H_RECORD",
+   "TOTAL_POINTS_SCORED",
+   "INTRA_DIVISION_RECORD",
+   "TOTAL_POINTS_AGAINST",
+   "RAW_STAT"
+  ],
+  "periodTypes": [
+   "TOTAL_SEASON",
+   "SCORING_PERIOD",
+   "WEEKLY"
+  ],
+  "rankTypes": [
+   "STANDARD",
+   "PPR",
+   "ROTO",
+   "ELIMINATION",
+   "SUPERFLEX"
+  ],
+  "tradeBlockStatusTypes": [
+   "NORMAL",
+   "ON_THE_BLOCK",
+   "UNTOUCHABLE"
+  ],
+  "playerOwnershipActivityLevels": [
+   "ACTIVE_LAST_DAY",
+   "ACTIVE_LAST_7_DAYS",
+   "ACTIVE_LAST_15_DAYS"
+  ],
+  "leagueSubTypes": [
+   "NONE",
+   "DRAFT_LOBBY",
+   "MOCKDRAFT_LOBBY",
+   "CUSTOM_MOCK"
+  ],
+  "logoTypes": [
+   "VECTOR",
+   "CUSTOM",
+   "CUSTOM_VALID",
+   "CUSTOM_UPLOAD"
+  ],
+  "restrictionTypes": [
+   "NONE",
+   "CHAMPION",
+   "INSIDER",
+   "ESPN",
+   "ESPN_PLUS",
+   "GAUNTLET",
+   "PROTEAM",
+   "TEST_LEAGUE",
+   "LOAD_TEST"
+  ],
+  "notificationTypes": [
+   "TEAM_PLAYER_INJURY",
+   "TEAM_PLAYER_AVAILABILITY",
+   "TEAM_PLAYER_STARTBENCH",
+   "TEAM_PLAYER_NEWS",
+   "TEAM_TRADE_OFFER",
+   "TEAM_LINEUP",
+   "DRAFT",
+   "DIRECT_CHAT",
+   "TEAM_DAILY_REPORT",
+   "TEAM_MATCHUP_SCORE",
+   "REDZONE",
+   "KEY_STAT_UPDATE",
+   "ADD_DROP",
+   "WEEKLY_RECAP",
+   "WAIVERS",
+   "KEY_PLAY",
+   "CELEBRATION_SHARE",
+   "SEASON_RECAP",
+   "TEAM_LINEUP_PROGAME_POSTPONED",
+   "ACHIEVEMENT",
+   "TEAM_LIVE_ACTIVITY",
+   "ELIMINATION_MESSAGE_POSTED"
+  ],
+  "pollTypes": [
+   "VOTE_PER_TEAM",
+   "VOTE_PER_OWNER"
+  ],
+  "inviteTypes": [
+   "EMAIL",
+   "FACEBOOK",
+   "TWITTER",
+   "TEXT_MESSAGE",
+   "LEAGUE_DIRECTORY",
+   "TRANSITION",
+   "LEAGUE_CREATION",
+   "LIVE_DRAFT_LOBBY",
+   "EMAIL_NONTARGETED",
+   "COPY_TO_CLIPBOARD",
+   "CLONE_LEAGUE",
+   "MEMBER"
+  ]
+ },
+ "league_41967023": {
+  "_note": "Snapshot of this league's rules for convenience. Read them live from mSettings where possible; the league manager can change them.",
+  "name": "Williamstown FBBL",
+  "scoringType": "H2H_POINTS",
+  "scoringWeights": {
+   "0": 1,
+   "1": 1,
+   "2": 2,
+   "3": 1,
+   "6": 1,
+   "11": -1,
+   "13": 1,
+   "14": -1,
+   "15": 1,
+   "16": -1
+  },
+  "formula": "FP = PTS + REB + AST + 2*STL + BLK - TO + (FGM - FGA) + (FTM - FTA)",
+  "lineupSlotCounts": {
+   "0": 1,
+   "1": 1,
+   "2": 1,
+   "3": 1,
+   "4": 1,
+   "5": 1,
+   "6": 1,
+   "11": 3,
+   "12": 3,
+   "13": 0
+  },
+  "starters": 10,
+  "bench": 3,
+  "teams": 10,
+  "divisions": {
+   "0": "Fish Bites",
+   "1": "Hot Wings"
+  },
+  "regularSeasonMatchups": 20,
+  "playoffTeams": 4,
+  "playoffMatchupPeriods": {
+   "21": [
+    21,
+    22
+   ],
+   "22": [
+    23,
+    24
+   ]
+  },
+  "finalScoringPeriod": 174,
+  "previousSeasons": [
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025,
+   2026
+  ]
+ }
+}

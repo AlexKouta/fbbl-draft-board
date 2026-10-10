@@ -1,0 +1,2026 @@
+{
+ "_about": {
+  "league": 41967023,
+  "captured": "2026-10-10",
+  "base": "{BASE} = https://lm-api-reads.fantasy.espn.com/apis/v3/games/fba",
+  "note": "Trimmed samples of real responses, for building and testing without live access. Arrays are cut to 1-2 elements; stats arrays keep one entry per kind (max 3); stats and averageStats maps keep only stat IDs 0,1,2,3,6,11,13,14,15,16,17,19,20,40,41,42 (real responses carry 0-44); matchupPeriods and proGamesByScoringPeriod keep 2 keys; long strings are truncated; decimals rounded to 3 places. Member names, member GUIDs, team names, team logos and chat text are redacted. Each sample records the request that produced it."
+ },
+ "games": {
+  "_request": {
+   "url": "https://lm-api-reads.fantasy.espn.com/apis/v3/games",
+   "xFantasyFilter": null,
+   "note": "filtered to the FBA entry"
+  },
+  "response": [
+   {
+    "abbrev": "FBA",
+    "active": true,
+    "currentSeason": {
+     "abbrev": "FBA 2027",
+     "active": true,
+     "currentScoringPeriod": {
+      "id": 1
+     },
+     "display": true,
+     "displayOrder": 0,
+     "endDate": 1844319600000,
+     "gameId": 3,
+     "id": 2027,
+     "name": "Fantasy Basketball 2027",
+     "startDate": 1781161200000
+    },
+    "currentSeasonId": 2027,
+    "display": true,
+    "displayOrder": 3,
+    "id": 3,
+    "name": "Fantasy Basketball",
+    "proSportAbbrev": "NBA",
+    "proSportName": "basketball"
+   }
+  ]
+ },
+ "season": {
+  "_request": {
+   "url": "{BASE}/seasons/2027",
+   "xFantasyFilter": null
+  },
+  "response": {
+   "abbrev": "FBA 2027",
+   "active": true,
+   "currentScoringPeriod": {
+    "id": 1
+   },
+   "display": true,
+   "displayOrder": 0,
+   "endDate": 1844319600000,
+   "gameId": 3,
+   "id": 2027,
+   "name": "Fantasy Basketball 2027",
+   "startDate": 1781161200000
+  }
+ },
+ "proTeamSchedules": {
+  "_request": {
+   "url": "{BASE}/seasons/2027?view=proTeamSchedules_wl",
+   "xFantasyFilter": null,
+   "note": "settings.typeNames (ESPN's enumerations) is omitted here; the full lists are in espn_fba_id_map.json"
+  },
+  "response": {
+   "display": true,
+   "settings": {
+    "defaultDraftPosition": 140,
+    "draftLobbyMinimumLeagueCount": 1,
+    "gameNotificationSettings": {
+     "availabilityNotificationsEnabled": true,
+     "draftNotificationsEnabled": true,
+     "injuryNotificationsEnabled": true,
+     "lineupNotificationsEnabled": false,
+     "positionEligibilityNotificationsEnabled": false,
+     "rosterNewsNotificationsEnabled": true,
+     "startBenchNotificationsEnabled": false,
+     "tradeNotificationsEnabled": true
+    },
+    "gated": false,
+    "playerOwnershipSettings": {
+     "firstGameDate": 1792514870974,
+     "lastGameDate": 1807462082595,
+     "startDate": 1782370800000
+    },
+    "proTeams": [
+     {
+      "abbrev": "IND",
+      "byeWeek": 0,
+      "id": 11,
+      "location": "Indiana",
+      "name": "Pacers",
+      "proGamesByScoringPeriod": {
+       "2": [
+        {
+         "awayProTeamId": 11,
+         "date": 1792627200000,
+         "homeProTeamId": 3,
+         "id": 401909839,
+         "scoringPeriodId": 2,
+         "startTimeTBD": false,
+         "statsOfficial": false,
+         "validForLocking": true
+        }
+       ],
+       "4": [
+        {
+         "awayProTeamId": 6,
+         "date": 1792796400000,
+         "homeProTeamId": 11,
+         "id": 401909844,
+         "scoringPeriodId": 4,
+         "startTimeTBD": false,
+         "statsOfficial": false,
+         "validForLocking": true
+        }
+       ]
+      },
+      "universeId": 1
+     }
+    ],
+    "readOnly": false,
+    "teamActivityEnabled": false
+   }
+  }
+ },
+ "players_wl": {
+  "_request": {
+   "url": "{BASE}/seasons/2027/players?view=players_wl",
+   "xFantasyFilter": {
+    "filterActive": {
+     "value": true
+    }
+   },
+   "note": "full response is 1,095 players"
+  },
+  "response": [
+   {
+    "defaultPositionId": 2,
+    "droppable": true,
+    "eligibleSlots": [
+     1,
+     5,
+     7,
+     8,
+     11,
+     12,
+     13
+    ],
+    "firstName": "Ian",
+    "fullName": "Ian Clark",
+    "id": 2489785,
+    "lastName": "Clark",
+    "ownership": {
+     "percentOwned": 0.03
+    },
+    "proTeamId": 3,
+    "universeId": 2
+   },
+   {
+    "defaultPositionId": 5,
+    "droppable": true,
+    "eligibleSlots": [
+     4,
+     9,
+     10,
+     11,
+     12,
+     13
+    ],
+    "firstName": "Yang",
+    "fullName": "Yang Hansen",
+    "id": 5217746,
+    "lastName": "Hansen",
+    "lastNewsDate": 1788292331000,
+    "ownership": {
+     "percentOwned": 0.66
+    },
+    "proTeamId": 22,
+    "universeId": 2
+   }
+  ]
+ },
+ "league_settings_status": {
+  "_request": {
+   "url": "{BASE}/seasons/2027/segments/0/leagues/41967023?view=mSettings&view=mStatus",
+   "xFantasyFilter": null,
+   "note": "matchupPeriods trimmed; the real map has 22 keys, with 21 -> [21,22] and 22 -> [23,24] for the playoffs"
+  },
+  "response": {
+   "draftDetail": {
+    "drafted": false,
+    "inProgress": false
+   },
+   "gameId": 3,
+   "id": 41967023,
+   "scoringPeriodId": 0,
+   "seasonId": 2027,
+   "segmentId": 0,
+   "settings": {
+    "acquisitionSettings": {
+     "acquisitionBudget": 100,
+     "acquisitionLimit": -1,
+     "acquisitionType": "WAIVERS_TRADITIONAL",
+     "finalPlaceTransactionEligible": 0,
+     "isUsingAcquisitionBudget": false,
+     "matchupAcquisitionLimit": 1,
+     "matchupLimitPerScoringPeriod": true,
+     "minimumBid": 1,
+     "transactionLockingEnabled": false,
+     "waiverHours": 24,
+     "waiverOrderReset": false,
+     "waiverProcessDays": [
+      "SUNDAY"
+     ],
+     "waiverProcessHour": 8
+    },
+    "draftSettings": {
+     "auctionBudget": 200,
+     "availableDate": 1791691200000,
+     "date": 1791694800000,
+     "isTradingEnabled": false,
+     "keeperCount": 0,
+     "keeperCountFuture": 0,
+     "keeperOrderType": "TRADITIONAL",
+     "leagueSubType": "NONE",
+     "orderType": "DRAFT_START",
+     "pickOrder": [
+      9,
+      8,
+      2,
+      6,
+      7,
+      10,
+      3,
+      4,
+      1,
+      12
+     ],
+     "timePerSelection": 60,
+     "type": "SNAKE"
+    },
+    "financeSettings": {
+     "entryFee": 0,
+     "miscFee": 0,
+     "perLoss": 0,
+     "perTrade": 0,
+     "playerAcquisition": 0,
+     "playerDrop": 0,
+     "playerMoveToActive": 0,
+     "playerMoveToIR": 0
+    },
+    "isAutoReactivate": false,
+    "isCustomizable": true,
+    "isPublic": false,
+    "name": "Williamstown FBBL",
+    "restrictionType": "NONE",
+    "rosterSettings": {
+     "autoPilotTypeSupported": "NONE",
+     "isBenchUnlimited": true,
+     "isUsingUndroppableList": true,
+     "lineupLocktimeType": "INDIVIDUAL_GAME",
+     "lineupSlotCounts": {
+      "0": 1,
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1,
+      "5": 1,
+      "6": 1,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 3,
+      "12": 3,
+      "13": 0,
+      "14": 0
+     },
+     "lineupSlotStatLimits": {},
+     "moveLimit": -1,
+     "positionLimits": {
+      "0": 0,
+      "1": -1,
+      "2": -1,
+      "3": -1,
+      "4": -1,
+      "5": 4
+     },
+     "rosterLocktimeType": "FIRSTGAME_SCORINGPERIOD",
+     "universeIds": [
+      0
+     ]
+    },
+    "scheduleSettings": {
+     "consolationLadderDisabled": false,
+     "divisions": [
+      {
+       "id": 0,
+       "name": "Fish Bites",
+       "size": 5
+      },
+      {
+       "id": 1,
+       "name": "Hot Wings",
+       "size": 5
+      }
+     ],
+     "matchupPeriodCount": 20,
+     "matchupPeriodLength": 1,
+     "matchupPeriods": {
+      "1": [
+       1
+      ],
+      "2": [
+       2
+      ]
+     },
+     "periodTypeId": 2,
+     "playoffMatchupPeriodLength": 2,
+     "playoffReseed": false,
+     "playoffSeedingRule": "H2H_RECORD",
+     "playoffSeedingRuleBy": 0,
+     "playoffTeamCount": 4,
+     "variablePlayoffMatchupPeriodLength": false
+    },
+    "scoringSettings": {
+     "allowOutOfPositionScoring": false,
+     "homeTeamBonus": 0,
+     "matchupTieRule": "NONE",
+     "matchupTieRuleBy": 0,
+     "playerRankType": "STANDARD",
+     "playoffHomeTeamBonus": 0,
+     "playoffMatchupTieRule": "NONE",
+     "playoffMatchupTieRuleBy": 0,
+     "scoringItems": [
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": 1,
+       "pointsOverrides": {},
+       "statId": 6
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": -1,
+       "pointsOverrides": {},
+       "statId": 11
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": 1,
+       "pointsOverrides": {},
+       "statId": 13
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": -1,
+       "pointsOverrides": {},
+       "statId": 14
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": 1,
+       "pointsOverrides": {},
+       "statId": 15
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": -1,
+       "pointsOverrides": {},
+       "statId": 16
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": 1,
+       "pointsOverrides": {},
+       "statId": 0
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": 1,
+       "pointsOverrides": {},
+       "statId": 1
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": 2,
+       "pointsOverrides": {},
+       "statId": 2
+      },
+      {
+       "isReverseItem": false,
+       "leagueRanking": 0,
+       "leagueTotal": 0,
+       "points": 1,
+       "pointsOverrides": {},
+       "statId": 3
+      }
+     ],
+     "scoringType": "H2H_POINTS"
+    },
+    "size": 10,
+    "tradeSettings": {
+     "allowOutOfUniverse": false,
+     "deadlineDate": 1804266000000,
+     "max": -1,
+     "revisionHours": 48,
+     "vetoVotesRequired": 4
+    }
+   },
+   "status": {
+    "activatedDate": 1790641277287,
+    "createdAsLeagueType": 2,
+    "creationInfo": {
+     "clientAddress": null,
+     "platform": "kona-prod-bf37e0f44b1e2c39f1c0e0ead77db8a1e6d2f18a",
+     "source": "{MEMBER-GUID-1}"
+    },
+    "currentLeagueType": 0,
+    "currentMatchupPeriod": 1,
+    "finalScoringPeriod": 174,
+    "firstScoringPeriod": 1,
+    "isActive": true,
+    "isExpired": false,
+    "isFull": true,
+    "isPlayoffMatchupEdited": false,
+    "isToBeDeleted": false,
+    "isViewable": false,
+    "isWaiverOrderEdited": false,
+    "lastUpdateInfo": {
+     "clientAddress": null,
+     "platform": "lm-processor",
+     "source": "NightlyLeagueUpdateTaskProcessor"
+    },
+    "latestScoringPeriod": 0,
+    "previousSeasons": [
+     2020,
+     2021,
+     2022,
+     2023,
+     2024,
+     2025,
+     2026
+    ],
+    "teamsJoined": 10,
+    "transactionScoringPeriod": 0,
+    "waiverLastExecutionDate": 1791531970094,
+    "waiverProcessStatus": {}
+   }
+  }
+ },
+ "league_teams_standings_2026": {
+  "_request": {
+   "url": "{BASE}/seasons/2026/segments/0/leagues/41967023?view=mTeam&view=mStandings",
+   "xFantasyFilter": null,
+   "note": "2026 had 12 teams and 132 schedule entries; 1 member, 1 team and 2 schedule entries kept"
+  },
+  "response": {
+   "members": [
+    {
+     "displayName": "REDACTED",
+     "firstName": "REDACTED",
+     "id": "{MEMBER-GUID-2}",
+     "lastName": "REDACTED",
+     "notificationSettings": [
+      {
+       "enabled": true,
+       "forId": 10,
+       "id": "1249f59b-338f-383e-817b-9d5dfbb2826b",
+       "type": "TEAM_PLAYER_INJURY"
+      }
+     ]
+    }
+   ],
+   "teams": [
+    {
+     "abbrev": "T1",
+     "currentProjectedRank": 0,
+     "divisionId": 0,
+     "draftDayProjectedRank": 3,
+     "eliminated": false,
+     "eliminationMatchupPeriod": 0,
+     "id": 1,
+     "isActive": false,
+     "isTransactionLocked": false,
+     "logo": "REDACTED_URL",
+     "logoType": "VECTOR",
+     "name": "Team 1",
+     "owners": [
+      "{MEMBER-GUID-1}"
+     ],
+     "playoffSeed": 2,
+     "points": 15556,
+     "pointsAdjusted": 0,
+     "pointsDelta": 0,
+     "primaryOwner": "{MEMBER-GUID-1}",
+     "rankCalculatedFinal": 2,
+     "rankFinal": 0,
+     "record": {
+      "away": {
+       "gamesBack": 0,
+       "losses": 2,
+       "percentage": 0.8,
+       "pointsAgainst": 0,
+       "pointsFor": 0,
+       "streakLength": 8,
+       "streakType": "WIN",
+       "ties": 0,
+       "wins": 8
+      },
+      "division": {
+       "gamesBack": 2,
+       "losses": 3,
+       "percentage": 0.7,
+       "pointsAgainst": 0,
+       "pointsFor": 0,
+       "streakLength": 6,
+       "streakType": "WIN",
+       "ties": 0,
+       "wins": 7
+      },
+      "home": {
+       "gamesBack": 0,
+       "losses": 3,
+       "percentage": 0.7,
+       "pointsAgainst": 0,
+       "pointsFor": 0,
+       "streakLength": 4,
+       "streakType": "WIN",
+       "ties": 0,
+       "wins": 7
+      },
+      "overall": {
+       "gamesBack": 1,
+       "losses": 5,
+       "percentage": 0.75,
+       "pointsAgainst": 12754,
+       "pointsFor": 15556,
+       "streakLength": 10,
+       "streakType": "WIN",
+       "ties": 0,
+       "wins": 15
+      }
+     },
+     "transactionCounter": {
+      "acquisitionBudgetSpent": 0,
+      "acquisitions": 72,
+      "drops": 72,
+      "matchupAcquisitionTotals": {
+       "1": 2,
+       "3": 6,
+       "4": 3,
+       "5": 1,
+       "6": 3,
+       "7": 4,
+       "8": 2,
+       "10": 3,
+       "11": 2,
+       "12": 1,
+       "13": 2,
+       "14": 2,
+       "15": 3,
+       "16": 1,
+       "17": 3,
+       "18": 2,
+       "19": 4,
+       "20": 2,
+       "21": 13,
+       "22": 13
+      },
+      "misc": 0,
+      "moveToActive": 519,
+      "moveToIR": 0,
+      "paid": 0,
+      "teamCharges": 0,
+      "trades": 0
+     },
+     "valuesByStat": {
+      "0": 15300,
+      "1": 777,
+      "2": 902,
+      "3": 3387,
+      "6": 6177,
+      "11": 1695,
+      "13": 5640,
+      "14": 11594,
+      "15": 2494,
+      "16": 3306
+     },
+     "waiverRank": 12,
+     "watchList": [
+      4277956,
+      3975,
+      3133603
+     ]
+    }
+   ],
+   "schedule": [
+    {
+     "away": {
+      "gamesPlayed": 0,
+      "teamId": 4,
+      "totalPoints": 589
+     },
+     "home": {
+      "gamesPlayed": 0,
+      "teamId": 11,
+      "totalPoints": 496
+     },
+     "matchupPeriodId": 1
+    },
+    {
+     "away": {
+      "gamesPlayed": 0,
+      "teamId": 5,
+      "totalPoints": 390
+     },
+     "home": {
+      "gamesPlayed": 0,
+      "teamId": 10,
+      "totalPoints": 629
+     },
+     "matchupPeriodId": 1
+    }
+   ]
+  }
+ },
+ "league_roster_2026": {
+  "_request": {
+   "url": "{BASE}/seasons/2026/segments/0/leagues/41967023?view=mRoster&scoringPeriodId=60",
+   "xFantasyFilter": null,
+   "note": "1 team and 1 roster entry kept (a full roster has 13 entries). stats shows a game log (05), season totals (00) and last 30 days (03)"
+  },
+  "response": {
+   "scoringPeriodId": 60,
+   "teams": [
+    {
+     "id": 2,
+     "roster": {
+      "appliedStatTotal": 158,
+      "entries": [
+       {
+        "acquisitionDate": null,
+        "acquisitionType": null,
+        "injuryStatus": "NORMAL",
+        "lineupSlotId": 5,
+        "pendingTransactionIds": null,
+        "playerId": 4278073,
+        "playerPoolEntry": {
+         "appliedStatTotal": 73,
+         "id": 4278073,
+         "keeperValue": 1,
+         "keeperValueFuture": 1,
+         "lineupLocked": true,
+         "onTeamId": 2,
+         "player": {
+          "active": true,
+          "defaultPositionId": 1,
+          "draftRanksByRankType": {
+           "STANDARD": {
+            "auctionValue": 61,
+            "published": false,
+            "rank": 3,
+            "rankSourceId": 0,
+            "rankType": "STANDARD",
+            "slotId": 0
+           },
+           "ROTO": {
+            "auctionValue": 64,
+            "published": false,
+            "rank": 3,
+            "rankSourceId": 0,
+            "rankType": "ROTO",
+            "slotId": 0
+           }
+          },
+          "droppable": false,
+          "eligibleSlots": [
+           0,
+           5,
+           8,
+           11,
+           12,
+           13
+          ],
+          "firstName": "Shai",
+          "fullName": "Shai Gilgeous-Alexander",
+          "id": 4278073,
+          "injured": false,
+          "injuryStatus": "ACTIVE",
+          "lastName": "Gilgeous-Alexander",
+          "ownership": {
+           "auctionValueAverage": 0,
+           "averageDraftPosition": 140,
+           "percentChange": -0.06,
+           "percentOwned": 99.86,
+           "percentStarted": 89.28
+          },
+          "proTeamId": 25,
+          "stats": [
+           {
+            "appliedStats": {
+             "0": 35,
+             "1": 2,
+             "2": 4,
+             "3": 7,
+             "6": 5,
+             "11": -3,
+             "13": 12,
+             "14": -26,
+             "15": 8,
+             "16": -8
+            },
+            "appliedTotal": 36,
+            "externalId": "401810240",
+            "id": "05401810240",
+            "proTeamId": 25,
+            "scoringPeriodId": 60,
+            "seasonId": 2026,
+            "statSourceId": 0,
+            "statSplitTypeId": 5,
+            "stats": {
+             "0": 35,
+             "1": 2,
+             "2": 2,
+             "3": 7,
+             "6": 5,
+             "11": 3,
+             "13": 12,
+             "14": 26,
+             "15": 8,
+             "16": 8,
+             "17": 3,
+             "19": 0.462,
+             "20": 1,
+             "40": 37,
+             "41": 1,
+             "42": 1
+            }
+           },
+           {
+            "appliedAverage": 33.588,
+            "appliedStats": {
+             "0": 2117,
+             "1": 52,
+             "2": 190,
+             "3": 448,
+             "6": 292,
+             "11": -151,
+             "13": 731,
+             "14": -1321,
+             "15": 540,
+             "16": -614
+            },
+            "appliedTotal": 2284,
+            "averageStats": {
+             "0": 31.132,
+             "1": 0.765,
+             "2": 1.397,
+             "3": 6.588,
+             "6": 4.294,
+             "11": 2.221,
+             "13": 10.75,
+             "14": 19.426,
+             "15": 7.941,
+             "16": 9.029,
+             "17": 1.691,
+             "19": 0.553,
+             "20": 0.879,
+             "40": 33.265,
+             "41": 1,
+             "42": 68
+            },
+            "externalId": "2026",
+            "id": "002026",
+            "proTeamId": 0,
+            "scoringPeriodId": 0,
+            "seasonId": 2026,
+            "statSourceId": 0,
+            "statSplitTypeId": 0,
+            "stats": {
+             "0": 2117,
+             "1": 52,
+             "2": 95,
+             "3": 448,
+             "6": 292,
+             "11": 151,
+             "13": 731,
+             "14": 1321,
+             "15": 540,
+             "16": 614,
+             "17": 115,
+             "19": 0.553,
+             "20": 0.879,
+             "40": 2262,
+             "41": 68,
+             "42": 68
+            }
+           },
+           {
+            "appliedAverage": 29.462,
+            "appliedStats": {
+             "0": 370,
+             "1": 7,
+             "2": 40,
+             "3": 83,
+             "6": 44,
+             "11": -33,
+             "13": 131,
+             "14": -238,
+             "15": 88,
+             "16": -109
+            },
+            "appliedTotal": 383,
+            "averageStats": {
+             "0": 28.462,
+             "1": 0.538,
+             "2": 1.538,
+             "3": 6.385,
+             "6": 3.385,
+             "11": 2.538,
+             "13": 10.077,
+             "14": 18.308,
+             "15": 6.769,
+             "16": 8.385,
+             "17": 1.538,
+             "19": 0.55,
+             "20": 0.807,
+             "40": 31.692,
+             "41": 1,
+             "42": 13
+            },
+            "externalId": "2026",
+            "id": "032026",
+            "proTeamId": 0,
+            "scoringPeriodId": 0,
+            "seasonId": 2026,
+            "statSourceId": 0,
+            "statSplitTypeId": 3,
+            "stats": {
+             "0": 370,
+             "1": 7,
+             "2": 20,
+             "3": 83,
+             "6": 44,
+             "11": 33,
+             "13": 131,
+             "14": 238,
+             "15": 88,
+             "16": 109,
+             "17": 20,
+             "19": 0.55,
+             "20": 0.807,
+             "40": 412,
+             "41": 13,
+             "42": 13
+            }
+           }
+          ],
+          "universeId": 2
+         },
+         "ratings": {
+          "0": {
+           "positionalRanking": 1,
+           "totalRanking": 2,
+           "totalRating": 2284
+          },
+          "1": {
+           "positionalRanking": 23,
+           "totalRanking": 116,
+           "totalRating": 53
+          },
+          "2": {
+           "positionalRanking": 5,
+           "totalRanking": 21,
+           "totalRating": 173
+          },
+          "3": {
+           "positionalRanking": 1,
+           "totalRanking": 13,
+           "totalRating": 383
+          }
+         },
+         "rosterLocked": true,
+         "status": "ONTEAM",
+         "tradeLocked": false
+        },
+        "status": "NORMAL"
+       }
+      ],
+      "tradeReservedEntries": 0
+     }
+    }
+   ]
+  }
+ },
+ "league_matchup_boxscore_2026": {
+  "_request": {
+   "url": "{BASE}/seasons/2026/segments/0/leagues/41967023?view=mMatchupScore&view=mBoxscore&scoringPeriodId=30",
+   "xFantasyFilter": {
+    "schedule": {
+     "filterMatchupPeriodIds": {
+      "value": [
+       5
+      ]
+     }
+    }
+   },
+   "note": "1 of 6 matchups kept; each roster cut to 1 entry (13 in rosterForCurrentScoringPeriod). In rosterForMatchupPeriod every entry has lineupSlotId 0 and one stats entry with id '05null' holding the player's totals for the matchup week"
+  },
+  "response": {
+   "scoringPeriodId": 30,
+   "schedule": [
+    {
+     "away": {
+      "adjustment": 0,
+      "cumulativeScore": {
+       "losses": 0,
+       "scoreByStat": {
+        "0": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 604
+        },
+        "1": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 24
+        },
+        "2": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 33
+        },
+        "3": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 174
+        },
+        "6": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 186
+        },
+        "11": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 82
+        },
+        "13": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 215
+        },
+        "14": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 461
+        },
+        "15": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 111
+        },
+        "16": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 141
+        }
+       },
+       "statBySlot": null,
+       "ties": 0,
+       "wins": 0
+      },
+      "eliminationMatchupPeriod": 0,
+      "pointsByScoringPeriod": {
+       "28": 101,
+       "29": 57,
+       "30": 76,
+       "31": 108,
+       "32": 102,
+       "33": 181,
+       "34": 71
+      },
+      "rosterForCurrentScoringPeriod": {
+       "appliedStatTotal": 76,
+       "entries": [
+        {
+         "lineupSlotId": 11,
+         "playerId": 5104157,
+         "playerPoolEntry": {
+          "appliedStatTotal": 0,
+          "id": 5104157,
+          "player": {
+           "defaultPositionId": 5,
+           "eligibleSlots": [
+            4,
+            9,
+            10,
+            11,
+            12,
+            13
+           ],
+           "firstName": "Victor",
+           "fullName": "Victor Wembanyama",
+           "id": 5104157,
+           "lastName": "Wembanyama",
+           "proTeamId": 24,
+           "stats": [],
+           "universeId": 2
+          }
+         }
+        }
+       ]
+      },
+      "rosterForMatchupPeriod": {
+       "appliedStatTotal": 696,
+       "entries": [
+        {
+         "lineupSlotId": 0,
+         "playerId": 3913176,
+         "playerPoolEntry": {
+          "appliedStatTotal": 89,
+          "id": 3913176,
+          "player": {
+           "defaultPositionId": 3,
+           "eligibleSlots": [
+            2,
+            6,
+            7,
+            8,
+            10,
+            11,
+            12,
+            13
+           ],
+           "firstName": "Brandon",
+           "fullName": "Brandon Ingram",
+           "id": 3913176,
+           "lastName": "Ingram",
+           "proTeamId": 28,
+           "stats": [
+            {
+             "appliedStats": {
+              "0": 87,
+              "1": 4,
+              "2": 12,
+              "3": 18,
+              "6": 20,
+              "11": -16,
+              "13": 28,
+              "14": -61,
+              "15": 24,
+              "16": -27
+             },
+             "appliedTotal": 89,
+             "id": "05null",
+             "proTeamId": 0,
+             "scoringPeriodId": 0,
+             "seasonId": 2026,
+             "statSourceId": 0,
+             "statSplitTypeId": 5,
+             "stats": {
+              "0": 87,
+              "1": 4,
+              "2": 6,
+              "3": 18,
+              "6": 20,
+              "11": 16,
+              "13": 28,
+              "14": 61,
+              "15": 24,
+              "16": 27,
+              "17": 7,
+              "19": 0.459,
+              "20": 0.889,
+              "40": 134,
+              "41": 4,
+              "42": 4
+             }
+            }
+           ],
+           "universeId": 1
+          }
+         }
+        }
+       ]
+      },
+      "teamId": 4,
+      "tiebreak": 0,
+      "totalPoints": 696
+     },
+     "home": {
+      "adjustment": 0,
+      "cumulativeScore": {
+       "losses": 0,
+       "scoreByStat": {
+        "0": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 783
+        },
+        "1": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 22
+        },
+        "2": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 44
+        },
+        "3": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 153
+        },
+        "6": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 224
+        },
+        "11": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 82
+        },
+        "13": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 279
+        },
+        "14": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 564
+        },
+        "15": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 145
+        },
+        "16": {
+         "ineligible": false,
+         "rank": 0,
+         "result": null,
+         "score": 180
+        }
+       },
+       "statBySlot": null,
+       "ties": 0,
+       "wins": 0
+      },
+      "eliminationMatchupPeriod": 0,
+      "pointsByScoringPeriod": {
+       "28": 124,
+       "29": 72,
+       "30": 192,
+       "31": 50,
+       "32": 212,
+       "33": 44,
+       "34": 174
+      },
+      "rosterForCurrentScoringPeriod": {
+       "appliedStatTotal": 192,
+       "entries": [
+        {
+         "lineupSlotId": 11,
+         "playerId": 4594268,
+         "playerPoolEntry": {
+          "appliedStatTotal": 12,
+          "id": 4594268,
+          "player": {
+           "defaultPositionId": 2,
+           "eligibleSlots": [
+            1,
+            2,
+            5,
+            6,
+            7,
+            8,
+            10,
+            11,
+            12,
+            13
+           ],
+           "firstName": "Anthony",
+           "fullName": "Anthony Edwards",
+           "id": 4594268,
+           "lastName": "Edwards",
+           "proTeamId": 16,
+           "stats": [
+            {
+             "appliedStats": {
+              "0": 18,
+              "1": 1,
+              "2": 4,
+              "3": 2,
+              "6": 2,
+              "11": -1,
+              "13": 6,
+              "14": -20,
+              "15": 5,
+              "16": -5
+             },
+             "appliedTotal": 12,
+             "externalId": "401810114",
+             "id": "05401810114",
+             "proTeamId": 16,
+             "scoringPeriodId": 30,
+             "seasonId": 2026,
+             "statSourceId": 0,
+             "statSplitTypeId": 5,
+             "stats": {
+              "0": 18,
+              "1": 1,
+              "2": 2,
+              "3": 2,
+              "6": 2,
+              "11": 1,
+              "13": 6,
+              "14": 20,
+              "15": 5,
+              "16": 5,
+              "17": 1,
+              "19": 0.3,
+              "20": 1,
+              "40": 36,
+              "41": 1,
+              "42": 1
+             }
+            }
+           ],
+           "universeId": 2
+          }
+         }
+        }
+       ]
+      },
+      "rosterForMatchupPeriod": {
+       "appliedStatTotal": 868,
+       "entries": [
+        {
+         "lineupSlotId": 0,
+         "playerId": 4277811,
+         "playerPoolEntry": {
+          "appliedStatTotal": 51,
+          "id": 4277811,
+          "player": {
+           "defaultPositionId": 2,
+           "eligibleSlots": [
+            0,
+            1,
+            5,
+            7,
+            8,
+            11,
+            12,
+            13
+           ],
+           "firstName": "Collin",
+           "fullName": "Collin Sexton",
+           "id": 4277811,
+           "lastName": "Sexton",
+           "proTeamId": 4,
+           "stats": [
+            {
+             "appliedStats": {
+              "0": 68,
+              "1": 0,
+              "2": 2,
+              "3": 15,
+              "6": 6,
+              "11": -8,
+              "13": 24,
+              "14": -54,
+              "15": 17,
+              "16": -19
+             },
+             "appliedTotal": 51,
+             "id": "05null",
+             "proTeamId": 0,
+             "scoringPeriodId": 0,
+             "seasonId": 2026,
+             "statSourceId": 0,
+             "statSplitTypeId": 5,
+             "stats": {
+              "0": 68,
+              "1": 0,
+              "2": 1,
+              "3": 15,
+              "6": 6,
+              "11": 8,
+              "13": 24,
+              "14": 54,
+              "15": 17,
+              "16": 19,
+              "17": 3,
+              "19": 0.444,
+              "20": 0.895,
+              "40": 112,
+              "41": 1,
+              "42": 4
+             }
+            }
+           ],
+           "universeId": 1
+          }
+         }
+        }
+       ]
+      },
+      "teamId": 10,
+      "tiebreak": 0,
+      "totalPoints": 868
+     },
+     "id": 25,
+     "matchupPeriodId": 5,
+     "playoffTierType": "NONE",
+     "winner": "HOME"
+    }
+   ]
+  }
+ },
+ "league_draft_2026": {
+  "_request": {
+   "url": "{BASE}/seasons/2026/segments/0/leagues/41967023?view=mDraftDetail",
+   "xFantasyFilter": null,
+   "note": "1 of 156 picks kept"
+  },
+  "response": {
+   "draftDetail": {
+    "completeDate": 1760262597419,
+    "drafted": true,
+    "inProgress": false,
+    "picks": [
+     {
+      "autoDraftTypeId": 0,
+      "bidAmount": 0,
+      "id": 1,
+      "keeper": false,
+      "lineupSlotId": 4,
+      "memberId": "{MEMBER-GUID-5}",
+      "nominatingTeamId": 0,
+      "overallPickNumber": 1,
+      "playerId": 3112335,
+      "reservedForKeeper": false,
+      "roundId": 1,
+      "roundPickNumber": 1,
+      "teamId": 9,
+      "tradeLocked": false
+     }
+    ]
+   }
+  }
+ },
+ "league_transactions_2026": {
+  "_request": {
+   "url": "{BASE}/seasons/2026/segments/0/leagues/41967023?view=mTransactions2&scoringPeriodId=10",
+   "xFantasyFilter": {
+    "transactions": {
+     "filterType": {
+      "value": [
+       "FREEAGENT",
+       "WAIVER",
+       "WAIVER_ERROR",
+       "FUTURE_ROSTER",
+       "ROSTER",
+       "TRADE_ACCEPT",
+       "TRADE_DECLINE",
+       "TRADE_PROPOSAL"
+      ]
+     }
+    }
+   },
+   "note": "one free-agent add and one lineup move kept"
+  },
+  "response": {
+   "transactions": [
+    {
+     "bidAmount": 0,
+     "executionType": "EXECUTE",
+     "id": "c785e790-0200-4972-9cd2-a7e75c820b26",
+     "isActingAsTeamOwner": false,
+     "isLeagueManager": false,
+     "isPending": false,
+     "items": [
+      {
+       "fromLineupSlotId": -1,
+       "fromTeamId": 0,
+       "isKeeper": false,
+       "overallPickNumber": 0,
+       "playerId": 4593125,
+       "toLineupSlotId": 12,
+       "toTeamId": 10,
+       "type": "ADD"
+      }
+     ],
+     "memberId": "{MEMBER-GUID-2}",
+     "proposedDate": 1761873345338,
+     "rating": 0,
+     "scoringPeriodId": 10,
+     "status": "EXECUTED",
+     "teamId": 10,
+     "type": "FREEAGENT"
+    },
+    {
+     "bidAmount": 0,
+     "executionType": "EXECUTE",
+     "id": "0d00c381-d3c8-4e3b-9a74-71c99a387672",
+     "isActingAsTeamOwner": false,
+     "isLeagueManager": false,
+     "isPending": false,
+     "items": [
+      {
+       "fromLineupSlotId": 11,
+       "fromTeamId": 0,
+       "isKeeper": false,
+       "overallPickNumber": 0,
+       "playerId": 4431678,
+       "toLineupSlotId": 1,
+       "toTeamId": 0,
+       "type": "LINEUP"
+      }
+     ],
+     "memberId": "{MEMBER-GUID-5}",
+     "proposedDate": 1761550226237,
+     "rating": 0,
+     "scoringPeriodId": 10,
+     "status": "EXECUTED",
+     "teamId": 9,
+     "type": "FUTURE_ROSTER"
+    }
+   ]
+  }
+ },
+ "league_communication_2027": {
+  "_request": {
+   "url": "{BASE}/seasons/2027/segments/0/leagues/41967023/communication/?view=kona_league_communication",
+   "xFantasyFilter": null,
+   "note": "one settings-activity topic (a draft date change: from/to are the old and new timestamps) and the league chat topic with 1 of 79 messages"
+  },
+  "response": {
+   "topics": [
+    {
+     "author": "REDACTED",
+     "creationInfo": {
+      "clientAddress": null,
+      "date": 1791613434146,
+      "platform": "espn-fantasy-web",
+      "source": "{MEMBER-GUID-4}"
+     },
+     "date": 1791613434146,
+     "dateEdited": 1791613434146,
+     "id": "fa31eb97-967d-4a23-a42f-f04d10aa4542",
+     "isDeleted": false,
+     "isEdited": true,
+     "lastUpdateInfo": {
+      "clientAddress": null,
+      "date": 1791613434146,
+      "platform": "espn-fantasy-web",
+      "source": "{MEMBER-GUID-4}"
+     },
+     "messages": [
+      {
+       "author": "REDACTED",
+       "creationInfo": {
+        "clientAddress": null,
+        "date": 1791613434146,
+        "platform": "espn-fantasy-web",
+        "source": "{MEMBER-GUID-4}"
+       },
+       "date": 1791613434146,
+       "from": 1791691200000,
+       "id": "57300a43-5a85-4839-b80e-98bc31ca9ec5",
+       "isAlternateFormat": false,
+       "isDeleted": false,
+       "isEdited": false,
+       "messageTypeId": 111,
+       "to": 1791694800000,
+       "topicId": "fa31eb97-967d-4a23-a42f-f04d10aa4542"
+      }
+     ],
+     "totalMessageCount": 1,
+     "type": "ACTIVITY_SETTINGS"
+    },
+    {
+     "author": "REDACTED",
+     "creationInfo": {
+      "clientAddress": null,
+      "date": 1697973130689,
+      "platform": "cinco_22519",
+      "source": "{MEMBER-GUID-6}"
+     },
+     "date": 1697973130689,
+     "dateEdited": 1776093177607,
+     "id": "70f23a8d-46e0-300d-9e7c-ed8ae610c819",
+     "isDeleted": false,
+     "isEdited": true,
+     "lastUpdateInfo": {
+      "clientAddress": null,
+      "date": 1776093177607,
+      "platform": null,
+      "source": "LM"
+     },
+     "messages": [
+      {
+       "author": "REDACTED",
+       "content": "REDACTED",
+       "creationInfo": {
+        "clientAddress": null,
+        "date": 1771542664876,
+        "platform": "chat",
+        "source": "{MEMBER-GUID-6}"
+       },
+       "date": 1771542664876,
+       "id": "aebecaf8-2b97-4ccf-9dd4-970d21db1376",
+       "isAlternateFormat": false,
+       "isDeleted": false,
+       "isEdited": false,
+       "messageTypeId": 0,
+       "topicId": "70f23a8d-46e0-300d-9e7c-ed8ae610c819"
+      }
+     ],
+     "totalMessageCount": 79,
+     "type": "CHAT_ALL_MEMBERS"
+    }
+   ]
+  }
+ },
+ "league_player_card": {
+  "_request": {
+   "url": "{BASE}/seasons/2027/segments/0/leagues/41967023?view=kona_playercard",
+   "xFantasyFilter": {
+    "players": {
+     "filterIds": {
+      "value": [
+       3112335
+      ]
+     },
+     "filterStatsForTopScoringPeriodIds": {
+      "value": 2,
+      "additionalValue": [
+       "002027",
+       "102027",
+       "002026"
+      ]
+     }
+    }
+   },
+   "note": "stats shows a game log (05), last season's totals (00) and this season's projection (10)"
+  },
+  "response": {
+   "players": [
+    {
+     "appliedStatTotal": 28,
+     "draftAuctionValue": 0,
+     "droppedByEliminatedTeam": false,
+     "id": 3112335,
+     "keeperValue": 1,
+     "keeperValueFuture": 0,
+     "lineupLocked": true,
+     "onTeamId": 0,
+     "player": {
+      "active": true,
+      "defaultPositionId": 5,
+      "draftRanksByRankType": {
+       "STANDARD": {
+        "auctionValue": 65,
+        "rank": 1,
+        "rankSourceId": 0,
+        "rankType": "STANDARD",
+        "slotId": 0
+       },
+       "ROTO": {
+        "auctionValue": 68,
+        "rank": 1,
+        "rankSourceId": 0,
+        "rankType": "ROTO",
+        "slotId": 0
+       }
+      },
+      "droppable": false,
+      "eligibleSlots": [
+       4,
+       9,
+       10,
+       11,
+       12,
+       13
+      ],
+      "firstName": "Nikola",
+      "fullName": "Nikola Jokic",
+      "id": 3112335,
+      "injured": false,
+      "injuryStatus": "ACTIVE",
+      "invalid": false,
+      "jersey": "15",
+      "lastName": "Jokic",
+      "lastNewsDate": 1791165139000,
+      "laterality": "NONE",
+      "ownership": {
+       "auctionValueAverage": 82.25,
+       "auctionValueAverageChange": 2.06,
+       "averageDraftPosition": 1.5,
+       "averageDraftPositionPercentChange": 0.01,
+       "percentChange": 0,
+       "percentOwned": 99.92,
+       "percentStarted": 99.2
+      },
+      "proTeamId": 7,
+      "seasonOutlook": "[truncated: ESPN's written season preview, about 600 characters]",
+      "stance": "NONE",
+      "stats": [
+       {
+        "appliedStats": {
+         "0": 23,
+         "1": 1,
+         "2": 0,
+         "3": 1,
+         "6": 8,
+         "11": 0,
+         "13": 7,
+         "14": -12,
+         "15": 8,
+         "16": -8
+        },
+        "appliedTotal": 28,
+        "externalId": "401811052",
+        "id": "05401811052",
+        "proTeamId": 7,
+        "scoringPeriodId": 174,
+        "seasonId": 2026,
+        "statSourceId": 0,
+        "statSplitTypeId": 5,
+        "stats": {
+         "0": 23,
+         "1": 1,
+         "2": 0,
+         "3": 1,
+         "6": 8,
+         "11": 0,
+         "13": 7,
+         "14": 12,
+         "15": 8,
+         "16": 8,
+         "17": 1,
+         "19": 0.583,
+         "20": 1,
+         "40": 18,
+         "41": 1,
+         "42": 1
+        }
+       },
+       {
+        "appliedAverage": 42.415,
+        "appliedStats": {
+         "0": 1799,
+         "1": 53,
+         "2": 184,
+         "3": 697,
+         "6": 836,
+         "11": -243,
+         "13": 644,
+         "14": -1132,
+         "15": 399,
+         "16": -480
+        },
+        "appliedTotal": 2757,
+        "averageStats": {
+         "0": 27.677,
+         "1": 0.815,
+         "2": 1.415,
+         "3": 10.723,
+         "6": 12.862,
+         "11": 3.738,
+         "13": 9.908,
+         "14": 17.415,
+         "15": 6.138,
+         "16": 7.385,
+         "17": 1.723,
+         "19": 0.569,
+         "20": 0.831,
+         "40": 34.846,
+         "41": 1,
+         "42": 65
+        },
+        "externalId": "2026",
+        "id": "002026",
+        "proTeamId": 0,
+        "scoringPeriodId": 0,
+        "seasonId": 2026,
+        "statSourceId": 0,
+        "statSplitTypeId": 0,
+        "stats": {
+         "0": 1799,
+         "1": 53,
+         "2": 92,
+         "3": 697,
+         "6": 836,
+         "11": 243,
+         "13": 644,
+         "14": 1132,
+         "15": 399,
+         "16": 480,
+         "17": 112,
+         "19": 0.569,
+         "20": 0.831,
+         "40": 2265,
+         "41": 65,
+         "42": 65
+        }
+       },
+       {
+        "appliedAverage": 42.611,
+        "appliedStats": {
+         "0": 2034,
+         "1": 58,
+         "2": 230,
+         "3": 727,
+         "6": 914,
+         "11": -245,
+         "13": 762,
+         "14": -1325,
+         "15": 388,
+         "16": -475
+        },
+        "appliedTotal": 3068,
+        "averageStats": {
+         "0": 28.25,
+         "1": 0.806,
+         "2": 1.597,
+         "3": 10.097,
+         "6": 12.694,
+         "11": 3.403,
+         "13": 10.583,
+         "14": 18.403,
+         "15": 5.389,
+         "16": 6.597,
+         "17": 1.694,
+         "19": 0.575,
+         "20": 0.817,
+         "40": 35.6,
+         "42": 72
+        },
+        "externalId": "2027",
+        "id": "102027",
+        "proTeamId": 0,
+        "scoringPeriodId": 0,
+        "seasonId": 2027,
+        "statSourceId": 1,
+        "statSplitTypeId": 0,
+        "stats": {
+         "0": 2034,
+         "1": 58,
+         "2": 115,
+         "3": 727,
+         "6": 914,
+         "11": 245,
+         "13": 762,
+         "14": 1325,
+         "15": 388,
+         "16": 475,
+         "17": 122,
+         "19": 0.575,
+         "20": 0.817,
+         "40": 2563.2,
+         "42": 72
+        },
+        "variance": {}
+       }
+      ],
+      "universeId": 2
+     },
+     "rosterLocked": true,
+     "status": "FREEAGENT",
+     "tradeLocked": false,
+     "transactions": []
+    }
+   ]
+  }
+ },
+ "league_free_agents": {
+  "_request": {
+   "url": "{BASE}/seasons/2027/segments/0/leagues/41967023?view=kona_player_info",
+   "xFantasyFilter": {
+    "players": {
+     "filterStatus": {
+      "value": [
+       "FREEAGENT",
+       "WAIVERS"
+      ]
+     },
+     "limit": 2,
+     "offset": 0,
+     "sortPercOwned": {
+      "sortPriority": 1,
+      "sortAsc": false
+     }
+    }
+   },
+   "note": "1 of the 2 returned players kept; stats cut to 1 entry and seasonOutlook removed. Everyone is a free agent because the 2027 draft had not happened"
+  },
+  "response": {
+   "players": [
+    {
+     "draftAuctionValue": 0,
+     "droppedByEliminatedTeam": false,
+     "id": 5104157,
+     "keeperValue": 1,
+     "keeperValueFuture": 0,
+     "lineupLocked": true,
+     "onTeamId": 0,
+     "player": {
+      "active": true,
+      "defaultPositionId": 5,
+      "draftRanksByRankType": {
+       "STANDARD": {
+        "auctionValue": 60,
+        "published": false,
+        "rank": 4,
+        "rankSourceId": 0,
+        "rankType": "STANDARD",
+        "slotId": 0
+       },
+       "ROTO": {
+        "auctionValue": 65,
+        "published": false,
+        "rank": 2,
+        "rankSourceId": 0,
+        "rankType": "ROTO",
+        "slotId": 0
+       }
+      },
+      "droppable": false,
+      "eligibleSlots": [
+       4,
+       9,
+       10,
+       11,
+       12,
+       13
+      ],
+      "firstName": "Victor",
+      "fullName": "Victor Wembanyama",
+      "id": 5104157,
+      "injured": false,
+      "injuryStatus": "ACTIVE",
+      "jersey": "1",
+      "lastName": "Wembanyama",
+      "lastNewsDate": 1791555053000,
+      "ownership": {
+       "activityLevel": null,
+       "auctionValueAverage": 79.2,
+       "auctionValueAverageChange": 1.45,
+       "averageDraftPosition": 3.08,
+       "averageDraftPositionPercentChange": 0.01,
+       "date": 1791606625355,
+       "leagueType": 0,
+       "percentChange": 0,
+       "percentOwned": 99.93,
+       "percentStarted": 99.57
+      },
+      "proTeamId": 24,
+      "stats": [
+       {
+        "appliedAverage": 32.875,
+        "appliedTotal": 2104,
+        "averageStats": {
+         "0": 25,
+         "1": 3.078,
+         "2": 1.031,
+         "3": 3.109,
+         "6": 11.5,
+         "11": 2.422,
+         "13": 8.641,
+         "14": 16.875,
+         "15": 5.813,
+         "16": 7.031,
+         "17": 1.906,
+         "19": 0.512,
+         "20": 0.827,
+         "40": 29.188,
+         "41": 0.859,
+         "42": 64
+        },
+        "externalId": "2026",
+        "id": "002026",
+        "proTeamId": 0,
+        "scoringPeriodId": 0,
+        "seasonId": 2026,
+        "statSourceId": 0,
+        "statSplitTypeId": 0,
+        "stats": {
+         "0": 1600,
+         "1": 197,
+         "2": 66,
+         "3": 199,
+         "6": 736,
+         "11": 155,
+         "13": 553,
+         "14": 1080,
+         "15": 372,
+         "16": 450,
+         "17": 122,
+         "19": 0.512,
+         "20": 0.827,
+         "40": 1868,
+         "41": 55,
+         "42": 64
+        }
+       }
+      ]
+     },
+     "rosterLocked": true,
+     "status": "FREEAGENT",
+     "tradeLocked": false
+    }
+   ]
+  }
+ },
+ "player_news": {
+  "_request": {
+   "url": "https://site.api.espn.com/apis/fantasy/v3/games/fba/news/players?playerId=3112335",
+   "xFantasyFilter": null,
+   "note": "1 of 10 feed items kept. Omitted from the item: images[], related[], authors[] and the sibling playerBets object (betting promotion). Long text truncated"
+  },
+  "response": {
+   "news": {
+    "timestamp": "2026-10-10T06:30:14Z",
+    "resultsOffset": 0,
+    "status": "success",
+    "resultsLimit": 50,
+    "resultsCount": 10,
+    "feed": [
+     {
+      "id": 50127220,
+      "nowId": "1-50127220",
+      "contentKey": "50127220-1-6-1",
+      "dataSourceIdentifier": "19b18dd493833",
+      "publishedkey": "50127220",
+      "type": "Story",
+      "feedDisplayType": "Default",
+      "headline": "Fantasy basketball: André Snellings' Ultimate Draft Board",
+      "description": "[truncated]",
+      "title": "Fantasy basketball: André Snellings' Ultimate Draft Board",
+      "linkText": "Fantasy basketball Ultimate Draft Board: Perfect picks for every round",
+      "categorized": "2026-10-09T22:18:38Z",
+      "originallyPosted": "2026-10-08T10:37:00Z",
+      "lastModified": "2026-10-08T13:55:02Z",
+      "published": "2026-10-08T13:55:02Z",
+      "root": "fba",
+      "section": "Fantasy",
+      "story": "[truncated: full article body as HTML]",
+      "allowAMP": true,
+      "allowComments": true,
+      "allowContentReactions": true,
+      "allowSearch": true,
+      "byline": "Andre Snellings",
+      "isLiveBlog": false,
+      "links": {
+       "api": {
+        "self": {
+         "href": "https://content.core.api.espn.com/v1/sports/news/50127220"
+        }
+       },
+       "app": {
+        "sportscenter": {
+         "href": "sportscenter://x-callback-url/showStory?uid=50127220"
+        }
+       },
+       "mobile": {
+        "href": "http://m.espn.go.com/wireless/story?storyId=50127220"
+       },
+       "web": {
+        "href": "[truncated]"
+       }
+      },
+      "premium": false,
+      "playerId": 3112335
+     }
+    ]
+   }
+  }
+ }
+}

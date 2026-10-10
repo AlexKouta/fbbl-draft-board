@@ -1,0 +1,10 @@
+data/raw/
+tests/shots/
+node_modules/
+.DS_Store
+# Root-level copies of the reference files; the committed copies live in reference/
+/ESPN Fantasy Basketball API Catalogue.md
+/PRD Fantasy Basketball Draft Board.md
+/espn_fba_data_access.md
+/espn_fba_id_map.json
+/espn_fba_sample_responses.json
