@@ -42,3 +42,10 @@ Choices made while building, where the PRD was silent or left room. Dates are Me
 ## Skipped
 
 - Nothing in the Must list was skipped. All three Nice items (age, wake lock, pick reordering) were done.
+
+## Phone layout (10 October 2026, after Alex tried it on an iPhone)
+
+- Below 640px wide the filter controls collapse behind a **Filters** button with a badge showing how many filters are active (tiers, positions, team, uptick, group, a non-default status, or the last-season source). The expanded state is not saved; it starts collapsed each load.
+- The top bar wraps: brand and mode switch on the first line, the four tabs across the second.
+- Columns hidden on phones, in addition to the portrait set: ADP, MPG, Team and GP. Team is still visible in the player sheet and the team filter. The Draft button scrolls off to the right on a phone, but tapping anywhere on a row opens the same pick modal, so no scrolling is needed to mark a pick.
+- Service worker cache version bumped to v2 so phones and iPads pick up the new layout.

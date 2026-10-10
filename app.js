@@ -11,6 +11,7 @@
   let state = null;       // saved state (Core shape)
   let hasAge = false;
   let wakeLock = null;
+  let filtersOpen = false; // phone layout only: whether the filter controls are expanded
 
   const INJURY_SHORT = { DAY_TO_DAY: 'DTD', OUT: 'OUT', QUESTIONABLE: 'Q', DOUBTFUL: 'D', PROBABLE: 'P', SUSPENSION: 'SUSP', INJURY_RESERVE: 'IR' };
   const SOURCE_LABEL = { proj: 'Projected 26-27', last: 'Last season 25-26' };
@@ -144,6 +145,11 @@
     $('uptick-toggle').classList.toggle('on', f.uptick);
     $('group-toggle').classList.toggle('on', f.groupByTier);
     $('th-other').textContent = S().source === 'proj' ? 'Last FPPG' : 'Proj FPPG';
+    const f2 = S().filters, active = f2.tiers.length + f2.positions.length + (f2.team ? 1 : 0) + (f2.uptick ? 1 : 0) + (f2.groupByTier ? 1 : 0)
+      + (f2.status !== (S().mode === 'draft' ? 'available' : 'all') ? 1 : 0) + (S().source !== 'proj' ? 1 : 0);
+    $('filters-badge').textContent = active ? String(active) : '';
+    $('controls').classList.toggle('expanded', filtersOpen);
+    $('filters-toggle').setAttribute('aria-expanded', String(filtersOpen));
     document.querySelectorAll('#players-table th[data-sort]').forEach(th => {
       const on = th.dataset.sort === S().sort.key;
       th.classList.toggle('sorted', on);
@@ -500,6 +506,7 @@
 
     // Controls
     $('search').addEventListener('input', e => { S().filters.search = e.target.value; save(); $('search-clear').hidden = !e.target.value; renderTable(); });
+    $('filters-toggle').addEventListener('click', () => { filtersOpen = !filtersOpen; renderControls(); });
     $('search-clear').addEventListener('click', () => { S().filters.search = ''; save(); renderPlayers(); $('search').focus(); });
     $('source-seg').addEventListener('click', e => { const b = e.target.closest('[data-source]'); if (!b) return; S().source = b.dataset.source; save(); renderPlayers(); });
     $('status-seg').addEventListener('click', e => { const b = e.target.closest('[data-status]'); if (!b) return; S().filters.status = b.dataset.status; save(); renderPlayers(); });

@@ -129,6 +129,7 @@ h2:first-child { margin-top: 4px; }
 .seg-btn.active { background: var(--fg); color: var(--bg); }
 
 /* ---- Controls ---- */
+.mobile-only { display: none; }
 .controls { padding: 8px 12px 6px; background: var(--bg); border-bottom: 1px solid var(--line); flex: 0 0 auto; }
 .controls-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .controls-row + .controls-row { margin-top: 6px; }
@@ -300,6 +301,34 @@ textarea:disabled, input:disabled { opacity: .7; }
   th.col-player, td.col-player { min-width: 150px; }
 }
 @media (max-width: 640px) {
-  .col-adp { display: none; }
+  .col-adp, .col-mpg, .col-team, .col-gp { display: none; }
   .mode-btn { min-width: 60px; padding: 0 10px; }
+  /* Top bar: brand and mode switch on the first line, tabs across the second */
+  .topbar { flex-wrap: wrap; gap: 6px 8px; padding: 6px 10px; }
+  .brand { order: 0; }
+  .mode-switch { order: 1; margin-left: auto; }
+  .tabs { order: 2; flex-basis: 100%; justify-content: space-between; gap: 0; }
+  .tab { padding: 0 8px; min-height: 40px; flex: 1 1 0; text-align: center; }
+  /* Controls collapse behind a Filters button */
+  .mobile-only { display: inline-flex; align-items: center; gap: 6px; }
+  #controls-more { display: none; }
+  .controls.expanded #controls-more { display: block; margin-top: 6px; }
+  .controls.expanded #filters-toggle { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .search-wrap { flex: 1 1 110px; min-width: 110px; max-width: none; }
+  #search { padding-right: 36px; }
+  .count { font-size: 13px; margin-left: 0; }
+  .seg-btn { padding: 0 9px; font-size: 14px; }
+  .chip { min-width: 40px; min-height: 38px; padding: 0 10px; }
+  /* Denser table */
+  table.players th, table.players td { padding: 0 6px; }
+  .col-rank { width: 36px; min-width: 36px; }
+  th.col-player, td.col-player { left: 36px; min-width: 136px; max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+  td.col-player { font-size: 15px; }
+  .big-btn { font-size: 17px; }
+  .draftbar { padding: 6px 10px; }
+  .draftbar-pick { font-size: 17px; }
+  .draftbar-next { font-size: 14px; }
+  .draftbar.your-pick .draftbar-next { font-size: 16px; }
+  .page { padding: 12px 12px calc(24px + env(safe-area-inset-bottom)); }
+  .big-btn { min-height: 72px; font-size: 18px; }
 }

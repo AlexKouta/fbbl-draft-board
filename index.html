@@ -46,31 +46,36 @@
 <main id="main">
 
   <section class="view" id="view-players">
-    <div class="controls">
+    <div class="controls" id="controls">
       <div class="controls-row">
         <div class="search-wrap">
           <input type="search" id="search" placeholder="Search players" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
           <button class="search-clear" id="search-clear" aria-label="Clear search" hidden>×</button>
         </div>
-        <div class="seg" id="source-seg" role="group" aria-label="Stat source">
-          <button class="seg-btn" data-source="proj">Projected 26-27</button>
-          <button class="seg-btn" data-source="last">Last season 25-26</button>
-        </div>
-        <div class="seg" id="status-seg" role="group" aria-label="Status">
-          <button class="seg-btn" data-status="available">Available</button>
-          <button class="seg-btn" data-status="taken">Taken</button>
-          <button class="seg-btn" data-status="mine">Mine</button>
-          <button class="seg-btn" data-status="all">All</button>
-        </div>
-      </div>
-      <div class="controls-row">
-        <div class="chips" id="tier-chips" aria-label="Tier filter"></div>
-        <div class="chips" id="pos-chips" aria-label="Position filter"></div>
-        <select id="team-select" aria-label="Team filter"><option value="">All teams</option></select>
-        <button class="chip toggle" id="uptick-toggle">▲ Uptick only</button>
-        <button class="chip toggle" id="group-toggle">Group by tier</button>
-        <button class="btn btn-quiet" id="clear-filters">Clear filters</button>
+        <button class="btn mobile-only" id="filters-toggle" aria-expanded="false">Filters <span class="tab-badge" id="filters-badge"></span></button>
         <div class="count" id="count"></div>
+      </div>
+      <div id="controls-more">
+        <div class="controls-row">
+          <div class="seg" id="source-seg" role="group" aria-label="Stat source">
+            <button class="seg-btn" data-source="proj">Projected 26-27</button>
+            <button class="seg-btn" data-source="last">Last season 25-26</button>
+          </div>
+          <div class="seg" id="status-seg" role="group" aria-label="Status">
+            <button class="seg-btn" data-status="available">Available</button>
+            <button class="seg-btn" data-status="taken">Taken</button>
+            <button class="seg-btn" data-status="mine">Mine</button>
+            <button class="seg-btn" data-status="all">All</button>
+          </div>
+        </div>
+        <div class="controls-row">
+          <div class="chips" id="tier-chips" aria-label="Tier filter"></div>
+          <div class="chips" id="pos-chips" aria-label="Position filter"></div>
+          <select id="team-select" aria-label="Team filter"><option value="">All teams</option></select>
+          <button class="chip toggle" id="uptick-toggle">▲ Uptick only</button>
+          <button class="chip toggle" id="group-toggle">Group by tier</button>
+          <button class="btn btn-quiet" id="clear-filters">Clear filters</button>
+        </div>
       </div>
     </div>
     <div class="table-wrap" id="table-wrap">
