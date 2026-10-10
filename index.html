@@ -24,6 +24,7 @@
     <button class="tab" data-view="players">Players</button>
     <button class="tab" data-view="team">My Team <span class="tab-badge" id="team-badge"></span></button>
     <button class="tab" data-view="picks">Picks <span class="tab-badge" id="picks-badge"></span></button>
+    <button class="tab" data-view="depth">Depth</button>
     <button class="tab" data-view="settings">Settings</button>
   </nav>
   <div class="mode-switch" id="mode-switch" role="group" aria-label="Mode">
@@ -111,6 +112,11 @@
 
   <section class="view" id="view-picks" hidden>
     <div class="page" id="picks-page"></div>
+  </section>
+
+  <section class="view" id="view-depth" hidden>
+    <div class="depth-picker" id="depth-picker"></div>
+    <div class="page depth-page" id="depth-page"></div>
   </section>
 
   <section class="view" id="view-settings" hidden>

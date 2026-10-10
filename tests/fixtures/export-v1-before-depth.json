@@ -1,0 +1,1513 @@
+{
+ "version": 1,
+ "exportedAt": "2026-10-10T09:00:00Z",
+ "players": {
+  "1966": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3202": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3448": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3468": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3975": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3978": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3992": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3995": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4251": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6430": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6440": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6442": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6450": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6477": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6478": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6578": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6583": {
+   "tier": "A",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6585": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6589": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "6606": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2490149": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2528210": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2530530": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2583632": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2595516": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2596112": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2991070": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2991139": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2991230": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "2991350": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3032976": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3032977": {
+   "tier": "S",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3032979": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3059318": {
+   "tier": "A",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3059319": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3062679": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3064290": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3064440": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3064482": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3064514": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3064560": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3078576": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3102530": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3102531": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3112335": {
+   "tier": "A",
+   "uptick": true,
+   "note": "old export",
+   "target": 12
+  },
+  "3133603": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3133628": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3134903": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3134907": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3134908": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3135045": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3136193": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3136195": {
+   "tier": "A",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3138196": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3146557": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3147657": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3149673": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3155526": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3155942": {
+   "tier": "A",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3157465": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3907497": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3908809": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3908845": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3913174": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3913176": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3917376": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3934672": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3934673": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3934719": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3936299": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "3945274": {
+   "tier": "S",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4017837": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4065648": {
+   "tier": "A",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4065670": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4065731": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4065732": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4065733": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4065804": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066211": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066259": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066261": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066262": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066320": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066328": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066336": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066354": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066372": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066383": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066457": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4066648": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4222252": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4277811": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4277847": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4277848": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4277905": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4277961": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278039": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278049": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278053": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278067": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278073": {
+   "tier": "S",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278078": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278104": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278129": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278402": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278562": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278580": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278585": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4278594": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4279888": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4348700": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4351852": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395625": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395626": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395628": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395630": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395651": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395702": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395712": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395723": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395724": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4395725": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4396907": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4396909": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4396971": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4396993": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397002": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397014": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397040": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397077": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397136": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397140": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397189": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397424": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397475": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4397688": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4431671": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4431678": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4431679": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4431680": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4431736": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4431767": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4431785": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432158": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432165": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432166": {
+   "tier": "A",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432171": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432194": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432241": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432573": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432582": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432639": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432810": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432816": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432823": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432848": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4432907": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433083": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433134": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433136": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433192": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433247": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433249": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433255": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433287": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433621": {
+   "tier": "A",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4433627": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4437244": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4566434": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4576060": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4576087": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4591725": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4592479": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4592691": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4593125": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4593803": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4594268": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4594327": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4600663": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4601023": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4601025": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4683021": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4683634": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4683678": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4683688": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4683692": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4683747": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4683766": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4683771": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4684740": {
+   "tier": "C",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4684742": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4684793": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4701230": {
+   "tier": "A",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4701232": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4702382": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4702384": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4709138": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4711272": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4711294": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4712849": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4712896": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4845367": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4845374": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4869342": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4869780": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4870562": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4871144": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4871145": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4873138": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4873153": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4896372": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4898371": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4900671": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4903027": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4914336": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "4997536": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5037871": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5041935": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5041939": {
+   "tier": "B",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5041955": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5061575": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5061589": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5082206": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5093267": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5095151": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5101761": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5104155": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5104157": {
+   "tier": "S",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5105550": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5105565": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5105623": {
+   "tier": "D",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5105839": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5106060": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5107173": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5107199": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5112087": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5124612": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5142620": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5142718": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5144091": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5144126": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5160992": {
+   "tier": "E",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5174563": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5175643": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5175737": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  },
+  "5254165": {
+   "tier": "F",
+   "uptick": false,
+   "note": "",
+   "target": null
+  }
+ },
+ "picks": [
+  {
+   "playerId": 3032977,
+   "by": "other"
+  },
+  {
+   "playerId": 3945274,
+   "by": "me"
+  }
+ ],
+ "settings": {
+  "teams": 10,
+  "rounds": 13,
+  "slot": 3,
+  "mode": "draft",
+  "source": "proj",
+  "view": "players",
+  "sort": {
+   "key": "fppg",
+   "dir": "desc"
+  },
+  "filters": {
+   "search": "",
+   "status": "all",
+   "tiers": [],
+   "positions": [],
+   "team": "",
+   "uptick": false,
+   "groupByTier": false
+  }
+ }
+}

@@ -167,6 +167,85 @@ test('a 13-man roster fills all slots with bench overflow', () => {
   assert.equal(r.overflow.length, 0);
 });
 
+console.log('Depth charts');
+const mkp = (id, positions, primary, projMpg, lastMpg, extra = {}) => ({
+  id, name: 'P' + id, team: 'TST', positions, primaryPosition: primary,
+  proj: { gp: projMpg ? 70 : 0, mpg: projMpg, fppg: projMpg / 2, fga: 10, fta: 5, to: 2 },
+  last: { gp: lastMpg ? 60 : 0, mpg: lastMpg, fppg: lastMpg / 2, fga: 8, fta: 4, to: 1 }, ...extra,
+});
+const fixture = [
+  mkp(1, ['PG'], 'PG', 34, 30), mkp(2, ['PG', 'SG'], 'SG', 28, 32), mkp(3, ['SG', 'SF'], 'SG', 22, 0),
+  mkp(4, ['SF', 'PF'], 'SF', 30, 28), mkp(5, ['PF', 'C'], 'PF', 26, 25), mkp(6, ['C'], 'C', 32, 33),
+  mkp(7, ['PG'], 'PG', 0, 20),
+];
+test('position groups: PG→G, SG/SF→G+F, PF/C→F+C, C→C', () => {
+  assert.deepEqual(Core.positionGroups(['PG']), ['G']);
+  assert.deepEqual(Core.positionGroups(['SG', 'SF']), ['G', 'F']);
+  assert.deepEqual(Core.positionGroups(['PF', 'C']), ['F', 'C']);
+  assert.deepEqual(Core.positionGroups(['C']), ['C']);
+});
+test('competition list: a guard sees every PG/SG-eligible teammate and no one else, by projected MPG', () => {
+  const list = Core.competition(fixture, fixture[0], 'proj');
+  assert.deepEqual(list.map(p => p.id), [1, 2, 3, 7]);
+  assert.ok(list.every(p => p.positions.includes('PG') || p.positions.includes('SG')));
+  const pfc = Core.competition(fixture, fixture[4], 'proj');
+  assert.deepEqual(pfc.map(p => p.id), [6, 4, 5, 3], 'PF/C merges forwards and centres (SG/SF counts as a forward)');
+});
+test('depth columns: every roster player in exactly one column, by primary position', () => {
+  const cols = Core.depthColumns(fixture, 'proj');
+  const all = Object.values(cols).flat().map(p => p.id).sort();
+  assert.deepEqual(all, [1, 2, 3, 4, 5, 6, 7]);
+  assert.deepEqual(cols.SG.map(p => p.id), [2, 3]);
+  assert.deepEqual(cols.PG.map(p => p.id), [1, 7]);
+});
+test('ordering: zero games sorts last; last-season source re-orders', () => {
+  assert.deepEqual(Core.sortByMpg(fixture, 'proj').map(p => p.id), [1, 6, 4, 2, 5, 3, 7]);
+  assert.deepEqual(Core.sortByMpg(fixture, 'last').map(p => p.id), [6, 2, 1, 4, 5, 7, 3]);
+});
+test('usage: POSS matches a hand calculation and shares sum to 100%', () => {
+  // (10 + 0.44*5 + 2) / 70 games... use a whole-season example: FGA 1325, FTA 475, TO 245, GP 72 (Jokic proj)
+  const j = byId(3112335);
+  const hand = Math.round((1325 + 0.44 * 475 + 245) / 72 * 10) / 10;
+  assert.equal(Core.possPerGame(j.proj), hand);
+  assert.equal(j.proj.poss, hand, 'data file stores the same value');
+  const teams = Core.resolveTeams(data);
+  const shares = Core.usageShares(teams.DEN.roster, 'proj');
+  const sum = [...shares.values()].reduce((t, v) => t + v, 0);
+  assert.ok(Math.abs(sum - 100) < 0.01, `shares sum to ${sum}`);
+});
+test('competition summary names rank and gaps', () => {
+  const list = Core.competition(fixture, fixture[1], 'proj');
+  const s = Core.competitionSummary(list, fixture[1], 'proj');
+  assert.equal(s, '2nd of 4 guards · 6.0 MPG behind the leader · 6.0 MPG ahead of the next');
+});
+test('roster build: 30 teams, no free agents, every pool player with a team is on its chart', () => {
+  const teams = Core.resolveTeams(data);
+  assert.equal(Object.keys(teams).length, 30);
+  assert.ok(!teams.FA);
+  for (const [abbr, t] of Object.entries(teams)) {
+    assert.ok(t.roster.length >= 8, `${abbr} has ${t.roster.length}`);
+    for (const p of t.roster) assert.equal(p.team, abbr, `${p.name} listed under ${abbr}`);
+  }
+  for (const p of data.players) {
+    if (p.team === 'FA') continue;
+    assert.ok(teams[p.team].roster.some(r => r.id === p.id), `${p.name} missing from ${p.team}`);
+  }
+});
+test('state: saved state without depthTeam loads; depthTeam round-trips; unknown team is dropped', () => {
+  const s = Core.loadState({ settings: { mode: 'draft' } }, data);
+  assert.equal(s.settings.depthTeam, null);
+  const s2 = Core.createState(data); s2.settings.depthTeam = 'DEN'; s2.settings.view = 'depth';
+  const back = Core.loadState(JSON.parse(Core.serializeState(s2)), data);
+  assert.equal(back.settings.depthTeam, 'DEN'); assert.equal(back.settings.view, 'depth');
+  assert.equal(Core.loadState({ settings: { depthTeam: 'XYZ' } }, data).settings.depthTeam, null);
+});
+test('an export made before this change imports without error', () => {
+  const old = JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'fixtures', 'export-v1-before-depth.json'), 'utf8'));
+  const s = Core.loadState(old, data);
+  assert.equal(s.picks.length, old.picks.length);
+  assert.equal(s.settings.depthTeam, null);
+});
+
 console.log('Text');
 test('search normalisation ignores case and accents', () => {
   assert.equal(Core.normalize('Jokić'), 'jokic');

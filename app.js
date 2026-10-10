@@ -12,6 +12,11 @@
   let hasAge = false;
   let wakeLock = null;
   let filtersOpen = false; // phone layout only: whether the filter controls are expanded
+  let teams = {};          // resolved depth charts by team abbreviation (Core.resolveTeams)
+  let teamAbbrs = [];      // alphabetical
+  let depthHighlight = null; // player id to highlight in the Depth view (not saved)
+  let depthByGroup = false;  // Depth view: three group columns instead of five positions (not saved)
+  let sheetStack = [];       // player ids of sheets opened from a depth list, for Back
 
   const INJURY_SHORT = { DAY_TO_DAY: 'DTD', OUT: 'OUT', QUESTIONABLE: 'Q', DOUBTFUL: 'D', PROBABLE: 'P', SUSPENSION: 'SUSP', INJURY_RESERVE: 'IR' };
   const SOURCE_LABEL = { proj: 'Projected 26-27', last: 'Last season 25-26' };
@@ -104,7 +109,7 @@
     document.body.classList.toggle('no-age', !hasAge);
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === st.mode));
     document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.view === st.view));
-    for (const v of ['players', 'team', 'picks', 'settings']) $('view-' + v).hidden = v !== st.view;
+    for (const v of ['players', 'team', 'picks', 'depth', 'settings']) $('view-' + v).hidden = v !== st.view;
     const mine = state.picks.filter(p => p.by === 'me').length;
     $('team-badge').textContent = mine ? String(mine) : '';
     $('picks-badge').textContent = state.picks.length ? String(state.picks.length) : '';
@@ -301,7 +306,98 @@
     if (v === 'players') renderPlayers();
     else if (v === 'team') renderTeam();
     else if (v === 'picks') renderPicks();
+    else if (v === 'depth') renderDepth();
     else if (v === 'settings') renderSettings();
+  }
+
+  // ---------- Depth charts ----------
+  function teamName(abbr) { return teams[abbr] ? teams[abbr].name : abbr; }
+
+  // One depth row, shared by the player sheet and the Depth view.
+  function depthRowHtml(p, idx, ctx) {
+    const src = S().source, s = p[src] || {}, gp = s.gp > 0, pk = pickInfo(p.id), u = p.inPool ? ps(p.id) : null;
+    const delta = (p.proj && p.proj.gp > 0 && p.last && p.last.gp > 0) ? Math.round((p.proj.mpg - p.last.mpg) * 10) / 10 : null;
+    const share = ctx.shares ? ctx.shares.get(p.id) : null;
+    const cls = ['drow'];
+    if (p.inPool) cls.push('tappable'); else cls.push('nonpool');
+    if (pk) cls.push(pk.by === 'me' ? 'mine' : 'taken');
+    if (ctx.highlightId === p.id) cls.push('selected');
+    const stats = [
+      `${(p.positions || []).join('/')}`,
+      gp ? `<b>${s.mpg.toFixed(1)}</b> MPG` : '<span class="dash">– MPG</span>',
+      `<span class="d-opt ${delta > 0 ? 'pos-delta' : delta < 0 ? 'neg-delta' : ''}">${delta == null ? '–' : (delta > 0 ? '+' : '') + delta.toFixed(1)} Δ</span>`,
+      `<span class="d-opt" title="Share of the team's projected shots, free-throw trips and turnovers. An estimate.">${share != null && gp ? Math.round(share) + '%' : '–'} usage</span>`,
+      gp ? `${s.fppg.toFixed(1)} FPPG` : '– FPPG',
+    ];
+    return `<div class="${cls.join(' ')}" data-id="${p.id}" ${p.inPool ? 'data-pool="1"' : ''}>
+      <div class="d-n">${idx + 1}</div>
+      <div class="d-name">${esc(p.name)}${injuryBadge(p)}${u && u.uptick ? '<span class="mark-up" title="Uptick">▲</span>' : ''}</div>
+      <div class="d-side">${u ? `<span class="tier tier-${u.tier}">${u.tier}</span>` : ''}${pk ? `<span class="pick-num by-${pk.by}">#${pk.number}</span>` : ''}</div>
+      <div class="d-stats">${stats.join(' · ')}</div>
+    </div>`;
+  }
+
+  // Team depth section for the player sheet.
+  function sheetDepthHtml(p) {
+    const t = teams[p.team];
+    if (!t) return `<div class="sheet-depth"><div class="sheet-depth-head"><strong>No team</strong><span class="meta">Free agent</span></div></div>`;
+    const src = S().source;
+    const list = Core.competition(t.roster, p, src);
+    const shares = Core.usageShares(t.roster, src, data.usageFtWeight);
+    const groups = Core.positionGroups(p.positions).map(g => Core.GROUP_LABELS[g]).join(' and ');
+    const summary = Core.competitionSummary(list, p, src);
+    return `<div class="sheet-depth">
+      <div class="sheet-depth-head"><strong>${esc(t.name)} · ${groups}</strong><span class="meta">${SOURCE_LABEL[src]}</span><button class="btn" data-x="fullteam" data-team="${esc(p.team)}">Full team</button></div>
+      <div class="sheet-depth-list" id="sheet-depth-list">${list.map((q, i) => depthRowHtml(q, i, { shares, highlightId: p.id })).join('')}</div>
+      <div class="sheet-depth-foot"><b>${esc(summary)}</b><br>Ordered by ESPN projected minutes. Not an official depth chart.</div>
+    </div>`;
+  }
+
+  function renderDepthPicker() {
+    const cur = S().depthTeam;
+    $('depth-picker').innerHTML = teamAbbrs.map(a => `<button class="chip${a === cur ? ' on' : ''}" data-team="${a}">${a}</button>`).join('');
+  }
+
+  function renderDepth() {
+    const st = S();
+    if (!teamAbbrs.length) { $('depth-page').innerHTML = `<p class="hint">No depth chart data in this build. Re-run the data fetch.</p>`; $('depth-picker').innerHTML = ''; return; }
+    if (!st.depthTeam || !teams[st.depthTeam]) { st.depthTeam = teamAbbrs[0]; save(); }
+    renderDepthPicker();
+    const t = teams[st.depthTeam], src = st.source;
+    const shares = Core.usageShares(t.roster, src, data.usageFtWeight);
+    const drafted = t.roster.filter(p => pickInfo(p.id)).length;
+    const cols = depthByGroup ? Core.depthGroups(t.roster, src) : Core.depthColumns(t.roster, src);
+    const keys = depthByGroup ? ['G', 'F', 'C'] : Core.POSITIONS;
+    const label = k => depthByGroup ? Core.GROUP_LABELS[k] : k;
+    const i = teamAbbrs.indexOf(st.depthTeam);
+    let html = `<div class="depth-head"><h3>${esc(t.name)}</h3>
+      <span class="meta">${t.roster.length} players · ${t.totalProjMpg.toFixed(1)} proj MPG · ${drafted} drafted · ${SOURCE_LABEL[src]}</span>
+      <div class="btn-row">
+        <button class="btn" data-depth="prev" aria-label="Previous team">‹ ${teamAbbrs[(i + teamAbbrs.length - 1) % teamAbbrs.length]}</button>
+        <button class="btn${depthByGroup ? ' btn-primary' : ''}" data-depth="group">By group</button>
+        <button class="btn" data-depth="next" aria-label="Next team">${teamAbbrs[(i + 1) % teamAbbrs.length]} ›</button>
+      </div></div>`;
+    html += `<div class="depth-cols${depthByGroup ? ' by-group' : ''}">`;
+    for (const k of keys) {
+      const list = cols[k];
+      html += `<div class="depth-col"><div class="depth-col-head">${label(k)}<span class="n">${list.length}</span></div>`;
+      html += list.length ? list.map((p, idx) => depthRowHtml(p, idx, { shares, highlightId: depthHighlight })).join('') : `<div class="depth-empty">–</div>`;
+      html += `</div>`;
+    }
+    html += `</div><p class="usage-note">Ordered by ESPN projected minutes. Not an official depth chart. Usage = share of the team's projected shots, free-throw trips and turnovers (FGA + 0.44 FTA + TO), an estimate. MPG Δ = projected minus last season.</p>`;
+    $('depth-page').innerHTML = html;
+    if (depthHighlight) {
+      const el = $('depth-page').querySelector(`.drow.selected`);
+      if (el) el.scrollIntoView({ block: 'center' });
+    }
+  }
+
+  function openDepthView(team, highlightId) {
+    if (teams[team]) S().depthTeam = team;
+    depthHighlight = highlightId || null;
+    sheetStack = [];
+    closeModal();
+    setView('depth');
   }
 
   // ---------- Modals ----------
@@ -347,12 +443,16 @@
       ${rows.map(([k, f]) => `<tr><td>${k}</td><td>${f(p.proj)}</td><td>${f(p.last)}</td></tr>`).join('')}</tbody></table>`;
   }
 
-  function openPlayerSheet(id) {
+  function openPlayerSheet(id, opts = {}) {
     const p = byId.get(id), u = ps(id), ro = S().mode === 'draft';
+    if (!p) return;
     const pk = pickInfo(id);
+    if (!opts.fromStack) sheetStack = [];
+    const backId = sheetStack.length ? sheetStack[sheetStack.length - 1] : null;
     const m = openModal(`
       <h3>${esc(p.name)}${ro ? '<span class="readonly-tag">read only</span>' : ''}</h3>
       <p class="sub">${esc(p.team)} · ${p.positions.join('/')}${p.age ? ` · age ${p.age}` : ''} · ${injuryBadge(p) || 'Active'} · ADP ${p.adp != null ? p.adp.toFixed(1) : '–'} · ESPN rank ${p.espnRank ?? '–'}${pk ? ` · Pick #${pk.number} (${pk.by === 'me' ? 'me' : 'other'})` : ''}</p>
+      ${sheetDepthHtml(p)}
       <div class="tier-pick" id="sheet-tiers">${Core.TIERS.map(t => `<button class="tier-${t}${u.tier === t ? ' sel' : ''}" data-tier="${t}" ${ro ? 'disabled' : ''}>${t}</button>`).join('')}</div>
       <div class="sheet-row">
         <button class="toggle-btn${u.uptick ? ' on' : ''}" id="sheet-uptick" ${ro ? 'disabled' : ''}>▲ Uptick ${u.uptick ? 'on' : 'off'}</button>
@@ -360,8 +460,24 @@
       </div>
       <textarea class="note" id="sheet-note" placeholder="Note" ${ro ? 'disabled' : ''}>${esc(u.note)}</textarea>
       ${compareTable(p)}
-      <div class="modal-actions"><button class="btn btn-primary" data-x="close">Done</button></div>`, { wide: true });
-    m.querySelector('[data-x="close"]').addEventListener('click', closeModal);
+      <div class="modal-actions">${backId ? `<button class="btn btn-back" data-x="back">‹ Back to ${esc(byId.get(backId).name)}</button>` : ''}<button class="btn btn-primary" data-x="close">Done</button></div>`, { wide: true });
+    m.querySelector('[data-x="close"]').addEventListener('click', () => { sheetStack = []; closeModal(); });
+    const back = m.querySelector('[data-x="back"]');
+    if (back) back.addEventListener('click', () => { const prev = sheetStack.pop(); openPlayerSheet(prev, { fromStack: true }); });
+    const full = m.querySelector('[data-x="fullteam"]');
+    if (full) full.addEventListener('click', () => openDepthView(full.dataset.team, id));
+    const dl = m.querySelector('#sheet-depth-list');
+    if (dl) {
+      dl.addEventListener('click', e => {
+        const row = e.target.closest('.drow[data-pool]'); if (!row) return;
+        const qid = parseInt(row.dataset.id, 10);
+        if (qid === id) return;
+        sheetStack.push(id);
+        openPlayerSheet(qid, { fromStack: true });
+      });
+      const sel = dl.querySelector('.drow.selected');
+      if (sel && dl.scrollHeight > dl.clientHeight) sel.scrollIntoView({ block: 'center' });
+    }
     if (ro) return;
     m.querySelector('#sheet-tiers').addEventListener('click', e => {
       const b = e.target.closest('[data-tier]'); if (!b) return;
@@ -571,6 +687,23 @@
       openCorrectionModal(id);
     });
 
+    // Depth view
+    $('depth-picker').addEventListener('click', e => {
+      const b = e.target.closest('[data-team]'); if (!b) return;
+      S().depthTeam = b.dataset.team; depthHighlight = null; save(); renderDepth();
+    });
+    $('depth-page').addEventListener('click', e => {
+      const nav = e.target.closest('[data-depth]');
+      if (nav) {
+        const i = teamAbbrs.indexOf(S().depthTeam);
+        if (nav.dataset.depth === 'group') depthByGroup = !depthByGroup;
+        else { S().depthTeam = teamAbbrs[(i + (nav.dataset.depth === 'next' ? 1 : teamAbbrs.length - 1)) % teamAbbrs.length]; depthHighlight = null; save(); }
+        renderDepth(); return;
+      }
+      const row = e.target.closest('.drow[data-pool]'); if (!row) return;
+      openPlayerSheet(parseInt(row.dataset.id, 10));
+    });
+
     // Settings
     $('set-slot').addEventListener('change', e => { S().slot = e.target.value ? parseInt(e.target.value, 10) : null; save(); renderAll(); });
     $('set-teams').addEventListener('change', e => {
@@ -621,15 +754,17 @@
     players = data.players;
     byId = new Map(players.map(p => [p.id, p]));
     hasAge = players.some(p => p.age != null);
+    teams = Core.resolveTeams(data);
+    teamAbbrs = Object.keys(teams).sort();
     loadSaved();
-    const teams = [...new Set(players.map(p => p.team))].sort();
-    $('team-select').innerHTML = `<option value="">All teams</option>` + teams.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+    const teamOptions = [...new Set(players.map(p => p.team))].sort();
+    $('team-select').innerHTML = `<option value="">All teams</option>` + teamOptions.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
     bind();
     renderAll();
     updateWakeLock();
     $('loading').hidden = true;
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
-    window.__app = { get state() { return state; }, get data() { return data; }, renderAll, save };
+    window.__app = { get state() { return state; }, get data() { return data; }, get teams() { return teams; }, renderAll, save };
   }
 
   init();

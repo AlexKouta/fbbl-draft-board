@@ -22,8 +22,11 @@ const ENDPOINT = `https://lm-api-reads.fantasy.espn.com/apis/v3/games/fba/season
 // Scoring weights keyed by ESPN stat ID. One place to change the league formula.
 // FP = PTS + REB + AST + 2*STL + BLK - TO + (FGM - FGA) + (FTM - FTA)
 const SCORING_WEIGHTS = { ...ID_MAP.league_41967023.scoringWeights };
+// Usage stand-in: possessions used per game = (FGA + USAGE_FT_WEIGHT * FTA + TO) / GP
+const USAGE_FT_WEIGHT = 0.44;
+const ROSTER_CAP = 15; // players per team on the depth chart, by projected MPG (pool players always kept)
 
-const STAT = { PTS: '0', BLK: '1', STL: '2', AST: '3', REB: '6', TO: '11', FGM: '13', FGA: '14', FTM: '15', FTA: '16', TPM: '17', MIN: '40', GP: '42' };
+const STAT = { PTS: '0', BLK: '1', STL: '2', AST: '3', REB: '6', TO: '11', FGM: '13', FGA: '14', FTM: '15', FTA: '16', TPM: '17', MIN: '40', GS: '41', GP: '42' };
 const SLOT_TO_POS = { 0: 'PG', 1: 'SG', 2: 'SF', 3: 'PF', 4: 'C' };
 const TIER_TARGETS = [['S', 5], ['A', 15], ['B', 30], ['C', 50], ['D', 80], ['E', 120]]; // cumulative cut positions; F is the rest
 const HALIBURTON_ID = 4396993;
@@ -132,7 +135,85 @@ function statBlock(entry) {
     gp, min: r1(min), ...totals, fp,
     fppg: gp ? r1(fp / gp) : 0,
     mpg: gp ? r1(min / gp) : 0,
+    poss: gp ? r1((totals.fga + USAGE_FT_WEIGHT * totals.fta + totals.to) / gp) : 0,
+    gs: s[STAT.GS] || 0,
   };
+}
+
+// Position groups from eligible positions: G = PG or SG, F = SF or PF, C = C.
+function positionGroups(positions) {
+  const g = [];
+  if (positions.includes('PG') || positions.includes('SG')) g.push('G');
+  if (positions.includes('SF') || positions.includes('PF')) g.push('F');
+  if (positions.includes('C')) g.push('C');
+  return g;
+}
+
+// Team depth charts: every active player with projected games and minutes, grouped by NBA team,
+// sorted by projected MPG, capped at ROSTER_CAP per team but never dropping a pool player.
+function buildTeams(rows, poolIds) {
+  const teams = {};
+  for (const [id, t] of Object.entries(ID_MAP.proTeams)) {
+    if (!/^[1-9][0-9]*$/.test(id)) continue; // skip free agents (0) and the _note key
+    teams[t.abbrev] = { name: `${t.location} ${t.name}`.trim(), totalProjMpg: 0, roster: [] };
+  }
+  const byTeam = {};
+  for (const p of rows) {
+    if (p.team === 'FA' || !teams[p.team]) continue;
+    const projected = p.proj.gp > 0 && p.proj.min > 0;
+    if (!projected && !poolIds.has(p.id)) continue; // pool players stay on their chart even without a projection
+    if (!projected) log(`WARNING: ${p.name} (${p.team}) is in the pool with no 2026-27 projection; placed at the bottom of the chart`);
+    (byTeam[p.team] = byTeam[p.team] || []).push(p);
+  }
+  for (const [abbr, list] of Object.entries(byTeam)) {
+    list.sort((a, b) => (b.proj.gp > 0) - (a.proj.gp > 0) || b.proj.mpg - a.proj.mpg || b.proj.fppg - a.proj.fppg);
+    const kept = [];
+    list.forEach((p, i) => {
+      const inPool = poolIds.has(p.id);
+      if (i < ROSTER_CAP) kept.push(p);
+      else if (inPool) { kept.push(p); log(`WARNING: ${p.name} (${abbr}) is in the pool but ranks ${i + 1} by projected MPG; kept beyond the cap of ${ROSTER_CAP}`); }
+    });
+    teams[abbr].roster = kept.map(p => poolIds.has(p.id)
+      ? { id: p.id, inPool: true }
+      : { id: p.id, inPool: false, name: p.name, team: p.team, positions: p.positions, primaryPosition: p.primaryPosition,
+          groups: positionGroups(p.positions), injuryStatus: p.injuryStatus,
+          proj: light(p.proj), last: light(p.last) });
+    teams[abbr].totalProjMpg = r1(kept.reduce((t, p) => t + p.proj.mpg, 0));
+  }
+  return teams;
+}
+function light(s) { return { gp: s.gp, mpg: s.mpg, fppg: s.fppg, fga: s.fga, fta: s.fta, to: s.to, poss: s.poss, gs: s.gs }; }
+
+function validateTeams(teams, pool) {
+  log('\n=== Roster validation ===');
+  const abbrs = Object.keys(teams);
+  if (abbrs.length !== 30) fail(`expected 30 teams, found ${abbrs.length}`);
+  let ok = true;
+  for (const abbr of abbrs.sort()) {
+    const t = teams[abbr];
+    const flag = t.roster.length < 8 ? '  FEWER THAN 8' : (t.totalProjMpg < 200 || t.totalProjMpg > 280 ? '  WARN: outside 200-280' : '');
+    log(`  ${abbr.padEnd(5)} ${String(t.roster.length).padStart(2)} players  ${String(t.totalProjMpg.toFixed(1)).padStart(6)} proj MPG${flag}`);
+    if (t.roster.length < 8) ok = false;
+  }
+  if (!ok) fail('a team has fewer than 8 players with a projection');
+  const onChart = new Set(abbrs.flatMap(a => teams[a].roster.map(r => r.id)));
+  const missing = pool.filter(p => p.team !== 'FA' && !onChart.has(p.id));
+  if (missing.length) fail(`pool players missing from their team chart: ${missing.map(p => `${p.name} (${p.team}, proj gp ${p.proj.gp}, min ${p.proj.min})`).join('; ')}`);
+  log(`  30 teams, every pool player with a team is on a chart, ${pool.filter(p => p.team === 'FA').length} pool free agents`);
+}
+
+function printDepth(teams, pool, abbr) {
+  const t = teams[abbr];
+  const byId = new Map(pool.map(p => [p.id, p]));
+  const full = t.roster.map(r => r.inPool ? byId.get(r.id) : r);
+  const possSum = full.reduce((s, p) => s + p.proj.poss, 0);
+  log(`\n=== ${t.name} (${abbr}): ${full.length} players, ${t.totalProjMpg} proj MPG ===`);
+  for (const pos of ['PG', 'SG', 'SF', 'PF', 'C']) {
+    const col = full.filter(p => p.primaryPosition === pos);
+    log(`  ${pos}:`);
+    if (!col.length) log('     –');
+    col.forEach((p, i) => log(`     ${i + 1}. ${p.name.padEnd(26)} ${p.positions.join('/').padEnd(6)} ${String(p.proj.mpg.toFixed(1)).padStart(5)} mpg  ${p.last.gp ? ((p.proj.mpg - p.last.mpg >= 0 ? '+' : '') + (p.proj.mpg - p.last.mpg).toFixed(1)).padStart(5) : '    –'} Δ  ${String(Math.round(p.proj.poss / possSum * 100)).padStart(3)}% usage  ${String(p.proj.fppg.toFixed(1)).padStart(5)} fppg${p.injuryStatus !== 'ACTIVE' ? '  ' + p.injuryStatus : ''}${(byId.has(p.id) ? '' : '  (not in pool)')}`));
+  }
 }
 
 function transform(raw) {
@@ -171,7 +252,8 @@ function transform(raw) {
   // Tier seeding by projected FPPG.
   pool.sort((a, b) => b.proj.fppg - a.proj.fppg || b.proj.fp - a.proj.fp);
   const cuts = seedTiers(pool);
-  return { rows, pool, cuts };
+  const teams = buildTeams(rows, poolIds);
+  return { rows, pool, cuts, teams };
 }
 
 function seedTiers(pool) {
@@ -240,9 +322,12 @@ async function main() {
     fs.writeFileSync(RAW_FILE, JSON.stringify(raw));
     log(`Saved raw response (${raw.length} players) to ${RAW_FILE}`);
   }
-  const { rows, pool, cuts } = transform(raw);
+  const { rows, pool, cuts, teams } = transform(raw);
   validate(rows, pool);
   report(pool, cuts);
+  validateTeams(teams, pool);
+  printDepth(teams, pool, 'DEN');
+  printDepth(teams, pool, 'OKC');
   if (!skipAges) await fetchAges(pool);
 
   const out = {
@@ -250,7 +335,9 @@ async function main() {
     season: SEASON,
     seasonLabel: '2026-27',
     scoringWeights: SCORING_WEIGHTS,
+    usageFtWeight: USAGE_FT_WEIGHT,
     players: pool,
+    teams,
   };
   fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
   fs.writeFileSync(OUT_FILE, JSON.stringify(out));

@@ -49,3 +49,19 @@ Choices made while building, where the PRD was silent or left room. Dates are Me
 - The top bar wraps: brand and mode switch on the first line, the four tabs across the second.
 - Columns hidden on phones, in addition to the portrait set: ADP, MPG, Team and GP. Team is still visible in the player sheet and the team filter. The Draft button scrolls off to the right on a phone, but tapping anywhere on a row opens the same pick modal, so no scrolling is needed to mark a pick.
 - Service worker cache version bumped to v2 so phones and iPads pick up the new layout.
+
+## Team depth charts (11 October 2026, from the PRD addendum)
+
+- **The addendum arrived as a Claude doc**, not a file in the repository. A Markdown export is saved as `reference/PRD Addendum Team Depth Charts.md`, and its content is merged into the main PRD as it asked.
+- **Pool players without a 2026-27 projection stay on their team's chart.** The addendum's two rules conflict for them (a player needs projected games and minutes to be on a chart, but every pool player with a team must appear). 15 players are affected (for example Gary Payton II, Bruce Brown, Jock Landale). They are placed at the bottom of their chart with a dash for MPG, which is what the ordering rule already prescribes for zero games, and the script prints a warning for each.
+- **Roster cap of 15 was never hit.** The largest chart is Milwaukee with 15; no team needed the "kept beyond the cap" exception.
+- **Team minute totals are mostly above 280.** 20 of 30 teams exceed the addendum's warn line, with a range of 224 to 357 projected MPG. ESPN projects overlapping minutes for deep benches rather than a 240-minute budget, so this is a property of the source and only a warning. The totals are shown in the Depth view header as given.
+- **Non-pool teammates carry totals, not per-game figures**, for FGA, FTA and TO, with games played beside them. That is the same shape as pool players, so one code path computes per-game values and usage for both. Pool players on a chart are stored as `{ id, inPool: true }` and resolved against the pool at load, so the data file does not duplicate them.
+- **Possessions per game is stored on every stat block** (`poss`) and recomputed in the app from the same totals, so the value in the file and the usage share on screen always agree. The 0.44 free-throw weight lives beside the scoring weights in the fetch script and is exported as `usageFtWeight`.
+- **Usage share reads sensibly** (Jokic 21%, Shai 21%, Murray 18%), so the column is kept rather than falling back to raw shot attempts.
+- **The Team depth section sits directly under the sheet header in both modes**, above the tier buttons. This keeps the addendum's Draft-mode rule (visible without scrolling in landscape) and the Prep-mode rule (tier buttons, target and note still on screen at 1180×820) with one layout. The list is capped at 230px and scrolls inside itself.
+- **The Depth view wraps each row's stats line** so all five columns fit side by side at 1180 wide with no truncation. Rows grow to two lines of stats where needed.
+- **"By group", previous and next team, and games started** (all Nice) were done. Games started is stored as `gs` on last-season stat blocks but not shown, since the projection has none and a lone last-season number was more clutter than help. The My Team entry point already existed (rows there open the sheet).
+- **The Depth tab's team is saved** as `depthTeam` in settings. An unknown or missing value falls back to the first team alphabetically. The "By group" toggle and the highlighted player are not saved.
+- **Service worker cache version bumped to v3.**
+- A pre-change export is kept at `tests/fixtures/export-v1-before-depth.json` and imported in the test run.

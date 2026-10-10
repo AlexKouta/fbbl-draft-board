@@ -1,7 +1,7 @@
 /* Service worker: precaches the app, then serves every request network-first with a
    3 second timeout and a cache fallback, so updates arrive when online and the app
    still opens offline. */
-const VERSION = 'fbbl-v2';
+const VERSION = 'fbbl-v3';
 const ASSETS = [
   './', './index.html', './styles.css', './core.js', './app.js', './manifest.webmanifest',
   './data/players.json', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon-64.png',

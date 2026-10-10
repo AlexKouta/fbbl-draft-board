@@ -66,7 +66,7 @@ const Core = (() => {
 
   function defaultSettings() {
     return {
-      teams: 10, rounds: 13, slot: null, mode: 'prep', source: 'proj', view: 'players',
+      teams: 10, rounds: 13, slot: null, mode: 'prep', source: 'proj', view: 'players', depthTeam: null,
       sort: { key: 'fppg', dir: 'desc' }, filters: defaultFilters(),
     };
   }
@@ -121,7 +121,8 @@ const Core = (() => {
     st.slot = rs.slot == null || rs.slot === '' ? null : clampInt(rs.slot, 1, st.teams, null);
     st.mode = rs.mode === 'draft' ? 'draft' : 'prep';
     st.source = rs.source === 'last' ? 'last' : 'proj';
-    st.view = ['players', 'team', 'picks', 'settings'].includes(rs.view) ? rs.view : 'players';
+    st.view = ['players', 'team', 'picks', 'depth', 'settings'].includes(rs.view) ? rs.view : 'players';
+    st.depthTeam = typeof rs.depthTeam === 'string' && data.teams && data.teams[rs.depthTeam] ? rs.depthTeam : null;
     if (rs.sort && typeof rs.sort === 'object' && typeof rs.sort.key === 'string') {
       st.sort = { key: rs.sort.key, dir: rs.sort.dir === 'asc' ? 'asc' : 'desc' };
     }
@@ -214,12 +215,121 @@ const Core = (() => {
   // ---- Tiers (checks on the build-time seeding) ----
   function tierOrder(t) { return TIERS.indexOf(t); }
 
+  // ---- Team depth charts ----
+  // Position groups from eligible positions: G = PG or SG, F = SF or PF, C = C.
+  const GROUP_LABELS = { G: 'Guards', F: 'Forwards', C: 'Centres' };
+  const GROUP_SINGULAR = { G: 'guard', F: 'forward', C: 'centre' };
+  const USAGE_FT_WEIGHT = 0.44;
+
+  function positionGroups(positions) {
+    const p = positions || [], g = [];
+    if (p.includes('PG') || p.includes('SG')) g.push('G');
+    if (p.includes('SF') || p.includes('PF')) g.push('F');
+    if (p.includes('C')) g.push('C');
+    return g;
+  }
+
+  // Possessions used per game: (FGA + 0.44 FTA + TO) / GP, 1 decimal. Zero with no games.
+  function possPerGame(stat, weight = USAGE_FT_WEIGHT) {
+    if (!stat || !(stat.gp > 0)) return 0;
+    return Math.round((stat.fga + weight * stat.fta + stat.to) / stat.gp * 10) / 10;
+  }
+
+  // Resolve data.teams into full player records once at load. Pool entries point at the pool
+  // record (so tiers, notes and picks apply); non-pool entries carry their own light record.
+  function resolveTeams(data) {
+    const byId = new Map((data.players || []).map(p => [p.id, p]));
+    const out = {};
+    for (const [abbr, t] of Object.entries(data.teams || {})) {
+      const roster = [];
+      for (const e of t.roster || []) {
+        const p = e.inPool ? byId.get(e.id) : e;
+        if (!p) continue;
+        p.inPool = !!e.inPool && byId.has(e.id);
+        p.groups = positionGroups(p.positions);
+        roster.push(p);
+      }
+      out[abbr] = { abbr, name: t.name, totalProjMpg: t.totalProjMpg || 0, roster };
+    }
+    return out;
+  }
+
+  // Sort for a stat source: zero games last, then MPG descending, then FPPG descending.
+  function sortByMpg(list, source) {
+    return [...list].sort((a, b) => {
+      const sa = a[source] || {}, sb = b[source] || {};
+      const ga = sa.gp > 0, gb = sb.gp > 0;
+      if (ga !== gb) return ga ? -1 : 1;
+      return (sb.mpg || 0) - (sa.mpg || 0) || (sb.fppg || 0) - (sa.fppg || 0) || String(a.name).localeCompare(String(b.name));
+    });
+  }
+
+  // Five columns by primary position; each player appears once.
+  function depthColumns(roster, source) {
+    const cols = {};
+    for (const pos of POSITIONS) cols[pos] = [];
+    for (const p of roster) {
+      const pos = POSITIONS.includes(p.primaryPosition) ? p.primaryPosition : (p.positions && p.positions[0]) || 'C';
+      cols[pos].push(p);
+    }
+    for (const pos of POSITIONS) cols[pos] = sortByMpg(cols[pos], source);
+    return cols;
+  }
+
+  // Three columns by position group using eligible positions; a player can appear in two.
+  function depthGroups(roster, source) {
+    const cols = { G: [], F: [], C: [] };
+    for (const p of roster) for (const g of positionGroups(p.positions)) cols[g].push(p);
+    for (const g of Object.keys(cols)) cols[g] = sortByMpg(cols[g], source);
+    return cols;
+  }
+
+  // Teammates sharing a position group with the player, plus the player, ordered by MPG.
+  function competition(roster, player, source) {
+    const groups = positionGroups(player.positions);
+    const list = roster.filter(p => p.id === player.id || positionGroups(p.positions).some(g => groups.includes(g)));
+    if (!list.some(p => p.id === player.id)) list.push(player);
+    return sortByMpg(list, source);
+  }
+
+  function ordinal(n) {
+    const s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+
+  // "2nd of 6 guards · 4.2 MPG behind the leader · 6.8 MPG ahead of the next"
+  function competitionSummary(list, player, source) {
+    const i = list.findIndex(p => p.id === player.id);
+    if (i < 0) return '';
+    const groups = positionGroups(player.positions);
+    const noun = groups.length === 1 ? GROUP_SINGULAR[groups[0]] + (list.length === 1 ? '' : 's') : 'players in group';
+    const mpg = p => (p[source] && p[source].gp > 0) ? p[source].mpg : null;
+    const parts = [`${ordinal(i + 1)} of ${list.length} ${noun}`];
+    const me = mpg(player);
+    if (me != null) {
+      if (i > 0 && mpg(list[0]) != null) parts.push(`${(mpg(list[0]) - me).toFixed(1)} MPG behind the leader`);
+      if (i < list.length - 1 && mpg(list[i + 1]) != null) parts.push(`${(me - mpg(list[i + 1])).toFixed(1)} MPG ahead of the next`);
+    }
+    return parts.join(' · ');
+  }
+
+  // Share of the team's possessions per game, as a percentage per player id.
+  function usageShares(roster, source, weight = USAGE_FT_WEIGHT) {
+    const poss = new Map(roster.map(p => [p.id, possPerGame(p[source], weight)]));
+    const total = [...poss.values()].reduce((t, v) => t + v, 0);
+    const out = new Map();
+    for (const [id, v] of poss) out.set(id, total > 0 ? v / total * 100 : 0);
+    return out;
+  }
+
   return {
     STATE_KEY, STATE_VERSION, TIERS, POSITIONS, LINEUP_SLOTS, STARTER_COUNT, DEFAULT_WEIGHTS,
     fantasyPoints, roundOf, myPickInRound, myPicks, nextMyPick, normalize,
     defaultFilters, defaultSettings, createState, loadState, serializeState,
     pickIndexOf, pickInfo, addPick, removePick, setPickBy, undoPick, movePick,
     assignLineup, tierOrder,
+    GROUP_LABELS, USAGE_FT_WEIGHT, positionGroups, possPerGame, resolveTeams, sortByMpg, depthColumns, depthGroups,
+    competition, competitionSummary, usageShares, ordinal,
   };
 })();
 

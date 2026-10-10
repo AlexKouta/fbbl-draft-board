@@ -2,9 +2,11 @@
 
 Oct 10, 2026 · @Alex
 
+Updated 11 October 2026: team depth charts added (a Depth view and a Team depth section in the player sheet), merged from the addendum in `reference/PRD Addendum Team Depth Charts.md`. The PRD describes what was built; `DECISIONS.md` records where the build departed from the addendum and why.
+
 ## Summary
 
-Build an offline-capable web app for iPad that ranks NBA players by fantasy points under the Williamstown FBBL scoring rules, lets Alex tier and annotate them before the draft, and tracks picks during the draft. It must be deployed and usable on the iPad before the draft at 4:00pm on Sunday 11 October 2026 (Melbourne time).
+Build an offline-capable web app for iPad that ranks NBA players by fantasy points under the Williamstown FBBL scoring rules, lets Alex tier and annotate them before the draft, shows each player's competition for minutes on his NBA team, and tracks picks during the draft. It must be deployed and usable on the iPad before the draft at 4:00pm on Sunday 11 October 2026 (Melbourne time).
 
 | Item | Decision |
 | --- | --- |
@@ -15,7 +17,8 @@ Build an offline-capable web app for iPad that ranks NBA players by fantasy poin
 | Player pool | About 220 to 240 players |
 | Tiers | S, A, B, C, D, E, F, seeded from projected fantasy points per game, editable |
 | Modes | Prep mode (edit tiers, flags, notes, targets) and Draft mode (mark picks only) |
-| Persistence | All user input saved on the device, with export and import as backup |
+| Depth charts | Every NBA team's roster by position, ordered by ESPN projected minutes per game, as a Depth view and as a Team depth section in the player sheet. Inferred from projections, not a coach's depth chart, and labelled that way |
+| Persistence | All user input saved on the device, with export and import as backup. The depth charts add only the last team viewed |
 | Builder | Claude Code, running locally on Alex's Mac |
 
 Reference files in the project: `ESPN Fantasy Basketball API Catalogue.md`, `espn_fba_id_map.json`, `espn_fba_sample_responses.json`, `espn_fba_data_access.md`. Copy them into the repository's `reference/` folder if they are not already there.
@@ -51,6 +54,7 @@ The tool has to answer one question quickly, many times in a row: who is the bes
 - Rank players by fantasy points per game and season total, under this league's scoring.
 - Let Alex impose his own judgement before the draft: tiers, an uptick flag, notes and target picks.
 - Track the draft as it happens with minimal taps, and keep the available list accurate.
+- From any player, in Prep or Draft mode, see his teammates at the same position group ordered by projected MPG, with minutes, the change in minutes from last season, shot volume, injury status and draft status beside each name. Browse any team's full depth chart by position.
 - Work with no internet, and never lose data.
 
 **Out of scope**
@@ -60,6 +64,7 @@ The tool has to answer one question quickly, many times in a row: who is the bes
 - Automated pick recommendations.
 - Syncing between devices (export and import covers moving data).
 - Deciding which players get the uptick flag. Alex will do that separately; the tool only stores the flag.
+- Official or coach-confirmed depth charts and starting line-ups. ESPN's fantasy API does not supply them reliably. Editing or reordering depth charts by hand. Detecting that a player changed teams in the off-season (season totals carry no team, so last season's minutes may have been earned elsewhere). Drafting a player who is not in the draft pool; non-pool teammates are shown for context only.
 
 **League rules that shape the tool**
 
@@ -142,6 +147,25 @@ Seed tiers at build time and store as `seedTier` on each player.
 
 That gives roughly S 5, A 10, B 15, C 20, D 30, E 40, with each boundary sitting on a natural drop-off.
 
+### Team depth charts
+
+Built in the same transform run from the same raw response, so a draft-morning refresh rebuilds them with current injury status.
+
+- Group every active player by `proTeamId`, excluding 0 (free agents), decoded with `proTeams` in the ID map.
+- A player is on a team's chart when his `102027` projection has games and minutes above zero. A pool player with a team is always on that team's chart, even without a projection (placed last, with a dash for MPG) and even beyond the cap, with a warning printed for each case.
+- Keep at most 15 players per team by projected MPG.
+- Position groups, derived from eligible positions: Guards = PG or SG, Forwards = SF or PF, Centres = C. A PF/C belongs to both Forwards and Centres.
+- Every stat block (`proj` and `last`, pool and non-pool) also stores `poss`, possessions used per game, and `gs`, games started:
+
+```latex
+\text{POSS} = \frac{\text{FGA} + 0.44\,\text{FTA} + \text{TO}}{\text{GP}}
+```
+
+The 0.44 weight sits beside the scoring weights in the fetch script and is exported as `usageFtWeight`. **Usage** in the app is a player's POSS as a share of the sum across his team's chart, labelled as an estimate of the team's projected shots, free-throw trips and turnovers.
+
+- Output: a top-level `teams` object in `data/players.json`, keyed by team abbreviation, each with `name`, `totalProjMpg` and `roster[]` sorted by projected MPG. Pool players are stored as `{ id, inPool: true }` and resolved against `players[]` at load; non-pool teammates carry a light record with the same field names (`id`, `name`, `team`, `positions`, `primaryPosition`, `groups`, `injuryStatus`, `inPool`, `proj`, `last` with `gp`, `mpg`, `fppg`, totals for `fga`, `fta`, `to`, plus `poss` and `gs`).
+- Roster validation, printed every run and failing loudly on the first two: exactly 30 teams; at least 8 players with a projection on every team; total projected MPG per team printed for all 30 with a warning outside 200 to 280 (most teams exceed 280 because ESPN projects overlapping bench minutes, see `DECISIONS.md`); every pool player with a team present on that team's chart; the four fantasy-point rows unchanged. The script also prints the Denver and Oklahoma City charts as text.
+
 ### Age (Nice)
 
 Age is not in the fantasy API. Try ESPN's public athlete endpoint, which is unverified: `https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/athletes/{id}`, reading `age` or `dateOfBirth`. Only call it for players in the pool, throttled. If it does not work within 15 minutes of effort, leave `age` null and hide the column.
@@ -161,7 +185,7 @@ Allow a tolerance of 1 point on the projection row in case ESPN has updated it. 
 
 ### Output file
 
-`data/players.json` holds `builtAt` (timestamp), `season`, `scoringWeights`, and `players[]`. Player state in the app is keyed by ESPN `id`, so re-running the fetch on draft morning to refresh injury status must not disturb Alex's tiers, notes or picks.
+`data/players.json` holds `builtAt` (timestamp), `season`, `scoringWeights`, `usageFtWeight`, `players[]` and `teams{}`. Player state in the app is keyed by ESPN `id`, so re-running the fetch on draft morning to refresh injury status must not disturb Alex's tiers, notes or picks.
 
 ## Architecture
 
@@ -184,7 +208,7 @@ Everything Alex enters is saved to `localStorage` (the browser's on-device stora
 | --- | --- |
 | Per player | `tier`, `uptick` (true or false), `note` (text), `target` (pick number or empty) |
 | Picks | One ordered array of `{playerId, by}` where `by` is `me` or `other`. Pick numbers are the array positions, never stored separately, so removing or inserting a pick renumbers everything after it automatically |
-| Settings | Teams (10), rounds (13), my draft slot (empty until set), current mode, stat source, sort, filters |
+| Settings | Teams (10), rounds (13), my draft slot (empty until set), current mode, stat source, sort, filters, `depthTeam` (the last team viewed in the Depth view; missing or unknown values fall back to the first team alphabetically) |
 
 Rules:
 
@@ -200,7 +224,7 @@ On iPad, a site opened in Safari and the same site opened from the home screen h
 
 ## Functional requirements
 
-The app has four views (Players, My Team, Picks, Settings) and two modes (Prep, Draft). Everything is **Must** unless marked **Nice**.
+The app has five views (Players, My Team, Picks, Depth, Settings) and two modes (Prep, Draft). Everything is **Must** unless marked **Nice**.
 
 ### Modes
 
@@ -251,7 +275,7 @@ Every column header sorts on tap, and a second tap reverses. Players with zero g
 
 ### Prep mode
 
-- Tapping a row opens a player sheet with: tier selector (seven large buttons), uptick toggle, target pick number field that shows the round as you type, a free-text note, and a side-by-side comparison of projected and last-season stats (GP, MPG, PTS, REB, AST, STL, BLK, TO, FG%, FT%, FPPG, FP, each per game where that applies).
+- Tapping a row opens a player sheet with: the Team depth section (below), tier selector (seven large buttons), uptick toggle, target pick number field that shows the round as you type, a free-text note, and a side-by-side comparison of projected and last-season stats (GP, MPG, PTS, REB, AST, STL, BLK, TO, 3PM, FG%, FT%, FPPG, FP, each per game where that applies).
 - Tapping the tier chip in the table opens a quick tier picker without opening the full sheet.
 - Target round is `ceil(target / teams)`.
 - Changes save immediately. No save button.
@@ -277,7 +301,39 @@ Snake order: for slot `s` and `N` teams, Alex's pick in round `r` is `(r - 1) * 
 
 **Target cue:** an available player whose target pick is at or before Alex's next pick gets a visible "target" highlight.
 
-Tapping a player's name in Draft mode opens the player sheet read-only, so notes can be read without risk of editing.
+Tapping a player's name in Draft mode opens the player sheet read-only, so notes and the Team depth section can be read without risk of editing. Nothing in the depth chart feature can mark, change or remove a pick.
+
+### Depth row (shared by the player sheet and the Depth view)
+
+Every player on a depth chart is drawn the same way: order number within the list; name with the injury badge and uptick marker; all eligible positions; MPG for the selected stat source (the sort key); MPG change (projected minus last season, signed, a dash when last season has zero games); Usage (share of team, percentage); FPPG for the selected source; the tier chip for pool players; and the same row states as the Players view (greyed with pick number when taken by another team, highlighted with pick number when Alex's).
+
+- A player with zero games in the selected source shows a dash for MPG and sorts last.
+- Teammates outside the draft pool are shown muted, with no tier chip, and are not tappable.
+- Tapping a pool teammate opens that player's sheet, with a Back control that returns to the previous player.
+- The stat source follows the app's global toggle. There is no separate toggle.
+
+### Team depth section in the player sheet
+
+- Appears directly under the sheet header in both Prep mode and Draft mode, and is itself read-only in both. Its list is capped in height and scrolls inside itself, so the tier buttons, target and note stay on screen in Prep mode on a landscape iPad, and the whole section is visible without scrolling in Draft mode.
+- Heading: the team and the selected player's position groups, such as "Oklahoma City Thunder · Guards", with the stat source.
+- List: every teammate on the team's chart who shares a position group with the selected player, plus the player, ordered by MPG, with the selected player's row highlighted. A player in two groups (such as PF/C) gets one merged list.
+- Summary line below the list: rank in the group and the gaps, such as "2nd of 6 guards · 4.2 MPG behind the leader · 6.8 MPG ahead of the next".
+- A "Full team" button opens the Depth view on that team with the player highlighted.
+- A free agent shows "No team" in place of the section.
+- Fixed caption: "Ordered by ESPN projected minutes. Not an official depth chart."
+
+### Depth view
+
+A fifth view beside Players, My Team, Picks and Settings, available in both modes.
+
+- **Team picker**, always visible: all 30 teams as chips in alphabetical order. The last team viewed is remembered.
+- **Team header:** team name, number of players shown, total projected MPG, how many are already drafted, and the stat source. Previous and next team buttons.
+- **Chart:** five columns in the order PG, SG, SF, PF, C. Each player appears once, under his primary position, ordered by MPG. Each entry is a depth row. An empty column shows a dash.
+- **By group** toggle: three columns (Guards, Forwards, Centres) using eligible positions, so a player can appear in two.
+- **Highlight:** when opened from a player sheet, that player's row is highlighted and scrolled into view.
+- A footnote repeats the caption and defines Usage and MPG change.
+
+Entry points: a row in Prep mode or a name in Draft mode opens the sheet with the section; "Full team" in the sheet opens the Depth view; the Depth tab opens the last team viewed or the first alphabetically; a row in My Team opens the read-only sheet.
 
 ### My Team view
 
@@ -312,6 +368,7 @@ The tool is used under time pressure, on a touch screen, beside another device, 
 - **Theme:** follow the device's light or dark setting. Tier chips use seven clearly different colours that work in both.
 - **Legibility:** tabular (fixed-width) numerals in stat columns. Dense rows, but names readable at arm's length.
 - **Nice:** keep the screen awake in Draft mode using the Screen Wake Lock API where supported.
+- **Depth charts:** reuse tier chips, injury badges, row states and numerals; the only new colour is the highlight for the selected player. In landscape all five columns sit side by side with no horizontal scrolling, with the stats line wrapping inside a column rather than truncating. In portrait the columns wrap to three, and on phones to one with Usage and MPG change hidden first. Team chips and tappable rows are at least 44 by 44 points. Per-team lookups are built once at load.
 
 ## Acceptance criteria
 
@@ -325,6 +382,13 @@ The build is done when every check below passes. Claude Code verifies the first 
 - Tier seeding: every pool player has exactly one tier, tiers are in order down the projected FPPG ranking, and each cut is within 3 places of its target.
 - Picks: after marking five players, returning the second to available leaves four picks numbered 1 to 4 in the original order.
 - State: save, reload and import round-trip without loss, and loading tolerates a player ID that is no longer in the pool.
+- Position groups: PG gives Guards; SG/SF gives Guards and Forwards; PF/C gives Forwards and Centres; C gives Centres.
+- Competition list: for a fixture team, a guard's list contains every teammate eligible at PG or SG and no one else, ordered by projected MPG descending, with the selected player included.
+- Depth columns: every roster player appears in exactly one column, the one for his primary position.
+- Ordering: a player with zero games in the selected source sorts last, and switching source re-orders by last season's MPG.
+- Usage: POSS reproduces a hand-calculated value for one player, and shares across a team's chart sum to 100% within rounding.
+- Roster build: 30 teams, no free agents on any chart, every pool player with a team present on that team's chart.
+- State: saved state without `depthTeam` loads cleanly, and an export made before the depth chart change imports without error.
 
 ### Browser checks (Claude Code, using a local server and a headless browser at 1180 by 820 and 820 by 1180 if one is available)
 
@@ -333,7 +397,8 @@ The build is done when every check below passes. Claude Code verifies the first 
 - Each filter works alone and combined, and Clear filters resets all of them.
 - A full pass in Prep mode: change a tier, set uptick, add a note, set target 45 and see `R5`. Reload and all four persist.
 - A full pass in Draft mode: mark one pick as other and one as mine, see both leave the Available list, see My Team and Picks update, undo, correct, and reload with state intact.
-- With the network disabled after first load, a reload still opens the app with data.
+- With the network disabled after first load, a reload still opens the app with data, and the Depth view opens with data.
+- Depth charts: no console errors when opening the Depth view. In Prep mode, opening a player shows the Team depth section with that player highlighted and the tier buttons, note and target still on screen. In Draft mode, tapping a name shows the section without scrolling in landscape. Marking a teammate as drafted by another team greys his depth row in both surfaces. "Full team" opens the Depth view on the right team with the player highlighted. Tapping a pool teammate opens his sheet and Back returns to the first player. The team picker, previous and next, and By group all work, and the last team survives a reload.
 
 ### iPad checks (Alex)
 
@@ -344,6 +409,16 @@ The build is done when every check below passes. Claude Code verifies the first 
 5. Undo, then return a pick to available from the Picks view. Numbers renumber correctly.
 6. Export, Reset draft, Import. Picks come back.
 7. Rotate to portrait. The table is still usable.
+
+Depth charts (added 11 October):
+
+8. Close and reopen the app from the home screen icon while online. The Depth tab appears. If it does not, close and reopen once more (the first open fetches the update, the second shows it).
+9. Confirm tiers, notes, targets and any picks from before the update are still there.
+10. In Prep mode, open a guard on a team you know well. His fellow guards are listed in a believable order.
+11. In Draft mode, mark one of his teammates as drafted by other. The teammate greys out in the depth list.
+12. Tap "Full team", then switch between three teams. No lag.
+13. Turn on aeroplane mode, reopen, and open a depth chart.
+14. Rotate to portrait. The depth chart is still readable.
 
 ## Build plan and risks
 
@@ -379,8 +454,14 @@ Build in this order, so the riskiest step fails first and a usable tool exists a
 | Stale app or data served from cache after an update | Medium | Network-first service worker, and the data build time shown in Settings |
 | Per-game ranking overrates players projected for few games | Certain | By design. Games played sits beside FPPG, and Alex adjusts tiers in prep |
 | Scope exceeds the time available | Medium | Build order above puts Must items first. Nice items are skipped without asking |
+| The depth chart change breaks the working draft tool hours before the draft | Low to medium | Additive change only, every existing test still passes, a pre-change export is imported in the test run, and the commit can be reverted if iPad checks fail |
+| ESPN projects minutes for too few players on some teams, leaving thin charts | Medium | Roster validation prints players per team and fails below 8. The thinnest chart is Cleveland with 8 |
+| Projected minutes do not match real rotations (new coach, trade, injury return) | Certain | By design. The caption says so, and injury badges and MPG change sit beside every name |
+| A player who changed teams shows last season's minutes from his old team | Certain for some players | Accepted. MPG change is a prompt to look closer, not a verdict |
+| Primary position puts a player in a column that surprises Alex | Medium | The player sheet and the By group toggle use eligible positions, so competition is still caught |
 
 ### Open items
 
 - Age depends on an unverified endpoint and may be dropped.
 - Uptick flags will be decided in a separate session. A paste-in import of flags by player ID through the standard Import is enough; no special feature is needed.
+- Likely starters are not marked on the depth charts. The projection has no games-started figure, and a guess would look more certain than it is.

@@ -10,13 +10,13 @@ The brief is in `reference/PRD Fantasy Basketball Draft Board.md`. Decisions mad
 | --- | --- |
 | `index.html`, `styles.css`, `core.js`, `app.js` | The app. No build step, no dependencies |
 | `sw.js`, `manifest.webmanifest`, `icons/` | Offline cache and home-screen install |
-| `data/players.json` | Player pool with projected and last-season stats, built by the fetch script |
+| `data/players.json` | Player pool with projected and last-season stats, plus every NBA team's depth chart, built by the fetch script |
 | `scripts/fetch_data.mjs` | Fetches ESPN's public player pool, validates, seeds tiers, writes `data/players.json` |
 | `scripts/config.json` | Manual include list of ESPN player IDs for the pool |
 | `scripts/make_icons.mjs` | Generates the PNG icons |
 | `tests/run_tests.mjs` | Automated tests (Node, no dependencies) |
 | `tests/browser_checks.mjs` | Headless browser checks (needs Playwright) |
-| `reference/` | ESPN API catalogue, ID map, sample responses, data access notes, PRD |
+| `reference/` | ESPN API catalogue, ID map, sample responses, data access notes, PRD and the depth chart addendum |
 
 ## Refresh the data
 
@@ -26,7 +26,7 @@ Run on the Mac, then commit and push. The app picks up the new file on its next 
 node scripts/fetch_data.mjs
 ```
 
-`--offline` re-runs the transform from the saved raw response in `data/raw/` without calling ESPN. `--no-ages` skips the age lookups. Validation checks print and the script fails loudly if they do not match.
+`--offline` re-runs the transform from the saved raw response in `data/raw/` without calling ESPN. `--no-ages` skips the age lookups. Validation checks print (the four fantasy-point rows, then the roster checks and the Denver and Oklahoma City depth charts) and the script fails loudly if they do not match.
 
 ## Tests
 

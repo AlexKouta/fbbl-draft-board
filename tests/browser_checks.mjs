@@ -232,6 +232,79 @@ for (const [w, h] of [[1180, 820], [820, 1180]]) {
     assert((await page.locator('#rows tr:has(.pname:has-text("Jalen Johnson"))').getAttribute('class')).includes('target-cue'), 'target cue shown');
   });
 
+  await check('depth: sheet section, highlight, controls reachable, Full team, Back, greyed teammate', async () => {
+    await page.click('[data-mode="prep"]');
+    await page.click('[data-view="players"]');
+    await page.click('#clear-filters');
+    // Prep mode sheet shows the section with the player highlighted and controls reachable
+    await page.click('#rows tr:has(.pname:has-text("Shai Gilgeous")) .pname');
+    await page.waitForSelector('.modal .sheet-depth');
+    assert((await page.textContent('.sheet-depth-head')).includes('Oklahoma City Thunder · Guards'), 'heading');
+    eq(await page.$eval('.sheet-depth-list .drow.selected .d-name', e => e.textContent.trim()), 'Shai Gilgeous-Alexander');
+    assert((await page.textContent('.sheet-depth-foot')).includes('1st of'), 'summary line');
+    assert((await page.textContent('.sheet-depth-foot')).includes('Not an official depth chart'), 'caption');
+    const inView = async sel => { const r = await page.$eval(sel, e => e.getBoundingClientRect()); return r.top >= 0 && r.bottom <= h; };
+    assert(await inView('#sheet-tiers'), 'tier buttons visible');
+    assert(await inView('#sheet-target'), 'target visible');
+    assert(await inView('#sheet-note'), 'note visible');
+    // Teammate tap opens his sheet; Back returns
+    const mate = page.locator('.sheet-depth-list .drow[data-pool]:not(.selected)').first();
+    const mateName = (await mate.locator('.d-name').innerText()).replace(/DTD|OUT|Q|▲/g, '').trim();
+    await mate.click();
+    await page.waitForSelector('.modal .btn-back');
+    assert((await page.textContent('.modal h3')).includes(mateName), 'teammate sheet opened');
+    await page.click('.modal .btn-back');
+    assert((await page.textContent('.modal h3')).includes('Shai Gilgeous-Alexander'), 'back to first player');
+    // Full team opens the Depth view on OKC with the player highlighted
+    await page.click('.modal [data-x="fullteam"]');
+    await page.waitForSelector('#view-depth:not([hidden])');
+    eq(await page.$eval('.tab.active', e => e.dataset.view), 'depth');
+    assert((await page.textContent('.depth-head h3')).includes('Oklahoma City Thunder'), 'right team');
+    eq(await page.$eval('#depth-page .drow.selected .d-name', e => e.textContent.trim()), 'Shai Gilgeous-Alexander');
+    eq(await page.$$eval('.depth-col', e => e.length), 5, 'five columns');
+    const rosterIds = await page.$$eval('#depth-page .drow', els => els.map(e => e.dataset.id));
+    eq(new Set(rosterIds).size, rosterIds.length, 'each player once');
+    // Non-pool rows are muted and not tappable
+    assert((await page.$$eval('#depth-page .drow.nonpool', e => e.length)) >= 1, 'non-pool rows shown');
+    assert((await page.$$eval('#depth-page .drow.nonpool[data-pool]', e => e.length)) === 0, 'non-pool rows not tappable');
+    // Team picker and prev/next
+    await page.click('#depth-picker [data-team="DEN"]');
+    assert((await page.textContent('.depth-head h3')).includes('Denver Nuggets'), 'picker switches team');
+    await page.click('[data-depth="next"]');
+    assert((await page.textContent('.depth-head h3')).includes('Detroit Pistons'), 'next team');
+    await page.click('[data-depth="group"]');
+    eq(await page.$$eval('.depth-col', e => e.length), 3, 'by group has three columns');
+    await page.click('[data-depth="group"]');
+    // Reload remembers the team
+    await page.reload({ waitUntil: 'load' });
+    await page.waitForSelector('#loading', { state: 'hidden' });
+    eq(await page.$eval('.tab.active', e => e.dataset.view), 'depth');
+    assert((await page.textContent('.depth-head h3')).includes('Detroit Pistons'), 'last team remembered');
+    // Draft mode: name tap shows the section without scrolling; marking a teammate greys his row in both surfaces
+    await page.click('[data-mode="draft"]');
+    await page.click('[data-view="players"]');
+    await page.fill('#search', 'Cason Wallace');
+    await page.click('#rows tr:has(.pname:has-text("Cason Wallace")) .draft-btn');
+    await page.click('.modal [data-by="other"]');
+    await page.fill('#search', 'Shai');
+    await page.click('#rows tr:has(.pname:has-text("Shai Gilgeous")) .pname');
+    await page.waitForSelector('.modal .sheet-depth');
+    if (w > h) assert(await inView('.sheet-depth-foot'), 'section visible without scrolling in landscape');
+    const wallaceRow = page.locator('.sheet-depth-list .drow:has(.d-name:has-text("Cason Wallace"))');
+    assert((await wallaceRow.getAttribute('class')).includes('taken'), 'teammate greyed in sheet');
+    assert(/^#\d+$/.test(await wallaceRow.locator('.pick-num').innerText()), 'pick number shown');
+    await page.click('.modal [data-x="fullteam"]');
+    await page.waitForSelector('#view-depth:not([hidden])');
+    assert((await page.locator('#depth-page .drow:has(.d-name:has-text("Cason Wallace"))').getAttribute('class')).includes('taken'), 'teammate greyed in Depth view');
+    // Clean up: return the pick and search
+    await page.click('[data-view="players"]');
+    await page.click('#search-clear');
+    await page.click('[data-status="all"]');
+    await page.click('#rows tr:has(.pname:has-text("Cason Wallace")) .pick-btn');
+    await page.click('.modal [data-x="return"]');
+    await page.click('[data-status="available"]');
+  });
+
   await check('export / reset draft / import round-trip', async () => {
     await page.click('[data-view="settings"]');
     await page.click('#export-btn');
@@ -261,6 +334,9 @@ for (const [w, h] of [[1180, 820], [820, 1180]]) {
     assert(await page.$('#loading'), 'app page loaded (not an error page)');
     assert((await rowCount()) > 200, 'rows rendered offline');
     eq(await firstName(), 'Nikola Jokic');
+    await page.click('[data-view="depth"]');
+    assert((await page.$$eval('#depth-page .drow', e => e.length)) >= 8, 'Depth view opens offline with data');
+    await page.click('[data-view="players"]');
     await context.setOffline(false);
   });
 
